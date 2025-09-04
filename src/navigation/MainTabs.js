@@ -2,10 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
-import DashboardScreen from '../screens/DashboardScreen';
-import VehiculosScreen from '../screens/VehiculosScreen';
-import MantenimientosScreen from '../screens/MantenimientosScreen';
-import PerfilScreen from '../screens/PerfilScreen';
+
+import VehiculosScreen from '../screens/Vehiculos/VehiculosScreen';
+import PerfilScreen from '../screens/Perfil/PerfilScreen';
+import MantenimientosStack from "./MantenimientosStack";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,9 +33,8 @@ export default function MainTabs() {
       })}
     >
       <Tab.Screen name="Perfil" component={PerfilScreen} />
-      
       <Tab.Screen name="Vehiculos" component={VehiculosScreen} />
-      <Tab.Screen name="Mantenimientos" component={MantenimientosScreen} />
+      <Tab.Screen name="Mantenimientos" component={MantenimientosStack} />
     </Tab.Navigator>
   );
 }
