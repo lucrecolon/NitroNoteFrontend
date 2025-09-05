@@ -10,7 +10,7 @@ const api_endpoints = {
 const all_vehiculos = async () => {
 
     try{
-        const vehiculos = await axios.get(`${api_base_url.vehiculo}`)
+        const vehiculos = await axios.get(`${api_endpoints.vehiculo}`)
         console.log(vehiculos)
         return vehiculos
     }
