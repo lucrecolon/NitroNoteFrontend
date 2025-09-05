@@ -8,8 +8,8 @@ export default function MantenimientosStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="MantenimientosList" component={MantenimientosScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="CrearMantenimiento" component={CrearMantenimientoScreen} options={{ title: 'Nuevo mantenimiento' }}/>
-            <Stack.Screen name="EditarMantenimiento" component={EditarMantenimientoScreen} options={{ title: 'Editar mantenimiento' }}/>
+            <Stack.Screen name="CrearMantenimiento" component={CrearMantenimientoScreen} options={{ title: 'Nuevo mantenimiento', headerShown: true }}/>
+            <Stack.Screen name="EditarMantenimiento" component={EditarMantenimientoScreen} options={{ title: 'Editar mantenimiento', headerShown: true }}/>
         </Stack.Navigator>
     );
 }
