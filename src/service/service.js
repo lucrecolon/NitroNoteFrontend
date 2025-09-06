@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const api_base_url = 'http://10.0.2.2:8080';
+const api_base_url = 'http://192.168.1.33:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -9,12 +9,12 @@ const api_endpoints = {
 }
 
 //Vehiculo
-const all_vehiculos = async () => {
+const getAllvehiculos = async () => {
 
     try{
-        const vehiculos = await axios.get(`${api_endpoints.vehiculo}`)
-        console.log(vehiculos)
-        return vehiculos
+        const {data} = await axios.get(`${api_endpoints.vehiculo}`)
+        console.log(data)
+        return data
     }
     catch(e){
         return Promise.reject(e);
@@ -71,7 +71,7 @@ export const deleteMantenimiento = async (id) => {
 
 
 const Api = {
-    all_vehiculos,
+    getAllvehiculos,
     getAllMantenimientos,
     getMantenimientoById,
     createMantenimiento,
