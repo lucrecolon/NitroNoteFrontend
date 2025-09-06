@@ -1,17 +1,13 @@
-import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import MainTabs from './MainTabs';
-import DetalleVehiculoScreen from '../screens/DetalleVehiculoScreen';
 
 const Stack = createNativeStackNavigator();
-
 export default function StackNavigator() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
-      <Stack.Screen name="DetalleVehiculo" component={DetalleVehiculoScreen} />
-    </Stack.Navigator>
-  );
+    return (
+        <Stack.Navigator>
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        </Stack.Navigator>
+    );
 }
