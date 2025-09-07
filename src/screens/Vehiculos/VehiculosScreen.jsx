@@ -13,7 +13,7 @@ export default function VehiculosScreen( ) {
         try {
             setRefreshing(true);
             const allvehiculos = await Api.getAllvehiculos();
-            setVehiculos(prev => [...prev, ...allvehiculos]);
+            setVehiculos(allvehiculos);
         } catch (e) {
             console.error(e);
         } finally {
