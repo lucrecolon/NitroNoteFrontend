@@ -13,7 +13,6 @@ const getAllvehiculos = async () => {
 
     try{
         const {data} = await axios.get(`${api_endpoints.vehiculo}`)
-        console.log(data)
         return data
     }
     catch(e){

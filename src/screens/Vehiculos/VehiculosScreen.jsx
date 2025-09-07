@@ -55,11 +55,7 @@ export default function VehiculosScreen( ) {
                                       {item.kilometros} kilometros
                                   </Text>
                                  </View> 
-                                <View style={styles.containerButton}>
-                                  <TouchableOpacity style={styles.editButton}>
-                                    <Text style={{color: '#2563EB', fontWeight: 'bold'}}>Editar</Text>
-                                  </TouchableOpacity>
-                                </View> 
+                               
                             </View>
 
                         );
