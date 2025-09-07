@@ -21,6 +21,25 @@ const getAllvehiculos = async () => {
     }
 };
 
+
+const createVehiculo = async (marca, modelo, patente, kilometros, anio) => {
+    
+    const body = {
+        patente: patente,
+        marca: marca,
+        modelo: modelo,
+        anio: anio,
+        kilometros: kilometros
+    }
+    try{
+        const {data} = await axios.post(`${api_endpoints.vehiculo}`, body)
+        return data
+    }
+    catch(e){
+        return Promise.reject(e);
+    } 
+}
+
 //Mantenimiento
 
 // GET /mantenimiento   → lista todos
@@ -72,6 +91,7 @@ export const deleteMantenimiento = async (id) => {
 
 const Api = {
     getAllvehiculos,
+    createVehiculo,
     getAllMantenimientos,
     getMantenimientoById,
     createMantenimiento,

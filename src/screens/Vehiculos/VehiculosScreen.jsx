@@ -1,7 +1,6 @@
 import React, { useState,useCallback } from 'react';
 import Api from '../../service/service'
 import { View, Text, FlatList, TouchableOpacity, RefreshControl, Alert, StyleSheet, Image } from 'react-native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 export default function VehiculosScreen( ) {
@@ -14,7 +13,7 @@ export default function VehiculosScreen( ) {
         try {
             setRefreshing(true);
             const allvehiculos = await Api.getAllvehiculos();
-            setVehiculos(allvehiculos);
+            setVehiculos(prev => [...prev, ...allvehiculos]);
         } catch (e) {
             console.error(e);
         } finally {
@@ -32,7 +31,7 @@ export default function VehiculosScreen( ) {
                 <FlatList
                     contentContainerStyle={{ padding: 16 }}
                     data={vehiculos}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item, index) => `${item.id}-${index}`}
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fetchVehiculos}/>}
                     ListEmptyComponent={
                         <Text style={{ textAlign: 'center'}}>
