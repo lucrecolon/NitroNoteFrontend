@@ -10,8 +10,6 @@ export default function StackNavigator() {
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
-            <Stack.Screen name="Crear Vehiculo" component={CrearVehiculoScreen}/>
-            <Stack.Screen name="Vehiculo" component={VehiculosScreen}/>
         </Stack.Navigator>
     );
 }
