@@ -138,7 +138,7 @@ export default function DetalleVehiculoScreen() {
                     <Text style={{ fontWeight: '600', marginTop: 8 }}>Patente </Text>
                     <TextInput
                         value={patente}
-                        onChangeText={setPatente}
+                        onChangeText={(text) => setPatente(text.toUpperCase())}
                         placeholder="AA000AA o ABC123"
                         style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
                     />
