@@ -23,13 +23,19 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                     </Text>
                 }
                 renderItem={({ item }) => {
-                    const fechaHecho = item.fechaDeRealizacion ?? item.fechaRealizacion ?? '-';
-                    const fechaPara = item.fechaARealizar ?? '-';
-                    const km = item.kmARealizar ?? item.kmARealizar ?? '-';
+                    const nombre = item?.nombre ?? item?.tipo ?? '-';
+                    const fechaHecho = item?.fechaDeRealizacion ?? item?.fechaRealizacion ?? '-';
+                    const fechaPara = item?.fechaARealizar ?? item?.fechaProgramada ?? '-';
+                    const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
+                    const patente = item?.vehiculo?.patente;
 
                     return (
                         <TouchableOpacity
-                            onPress={() => navigation.navigate('EditarMantenimiento', { maintenanceId: item.id ?? item.idMantenimiento })}
+                            onPress={() =>
+                                navigation.navigate('EditarMantenimiento', {
+                                    maintenanceId: item.id ?? item.idMantenimiento,
+                                })
+                            }
                             style={{
                                 padding: 14,
                                 borderWidth: 1,
@@ -40,12 +46,15 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                             }}
                         >
                             <Text style={{ fontWeight: '600', color: done ? '#065F46' : '#111827' }}>
-                                {item.nombre}
+                                {nombre}
                             </Text>
-                            <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
+                            <Text style={{ opacity: 0.7, marginTop: 2, color: done ? '#047857' : '#374151' }}>
+                                {patente}
+                            </Text>
+                            <Text style={{ opacity: 0.7, marginTop: 2, color: done ? '#047857' : '#374151' }}>
                                 {done ? `Hecho el ${fechaHecho}` : `Realizar el ${fechaPara}`}
                             </Text>
-                            <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
+                            <Text style={{ opacity: 0.7, marginTop: 2, color: done ? '#047857' : '#374151' }}>
                                 {done ? `Hecho a los ${km} KM` : `Realizar a los ${km} KM`}
                             </Text>
                         </TouchableOpacity>
@@ -76,8 +85,6 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
     );
 }
 
-
-
 export default function MantenimientosScreen() {
     const [pendientes, setPendientes] = useState([]);
     const [hechos, setHechos] = useState([]);
@@ -102,9 +109,7 @@ export default function MantenimientosScreen() {
 
     const handleAddPress = () => {
         navigation.navigate('CrearMantenimiento', {
-            // refresca cuando vuelve de crear mantenimiento
             onSaved: fetchMantenimientos,
-            // vehicleId: 123, // cuando vinculemos con el auto
         });
     };
 

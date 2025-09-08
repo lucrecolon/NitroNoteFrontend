@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const api_base_url = 'http://192.168.1.33:8080';
+const api_base_url = 'http://10.0.2.2:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -9,7 +9,7 @@ const api_endpoints = {
 }
 
 //Vehiculo
-const getAllvehiculos = async () => {
+export const getAllvehiculos = async () => {
 
     try{
         const {data} = await axios.get(`${api_endpoints.vehiculo}`)
