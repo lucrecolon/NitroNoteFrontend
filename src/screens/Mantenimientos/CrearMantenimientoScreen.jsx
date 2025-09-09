@@ -119,7 +119,7 @@ export default function CrearMantenimientoScreen() {
                         <Text style={{ opacity: 0.7, marginBottom: 8 }}>
                             No hay vehículos cargados. Creá uno antes de registrar un mantenimiento.
                         </Text>
-                        <Button title="Crear vehículo" onPress={() => nav.navigate("Crear Vehiculo")} />
+                        <Button title="Crear vehículo" onPress={() => nav.navigate('Vehiculos', { screen: 'Crear Vehiculo' })} />
                     </>
                 ) : (
                     <View style={{ borderWidth: 1, borderRadius: 8, overflow: 'hidden' }}>
