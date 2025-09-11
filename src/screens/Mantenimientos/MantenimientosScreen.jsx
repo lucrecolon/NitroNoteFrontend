@@ -10,6 +10,18 @@ const Tab = createMaterialTopTabNavigator();
 function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
     const navigation = useNavigation();
 
+    // 👉 Acción al finalizar mantenimiento
+    const handleFinalizar = async (id) => {
+        try {
+            await Api.finalizarMantenimiento(id); // PATCH al backend
+            await onRefresh(); // refresca listas
+            Alert.alert('Éxito', 'Mantenimiento marcado como finalizado.');
+        } catch (err) {
+            console.error('Error al finalizar mantenimiento', err);
+            Alert.alert('Error', 'No se pudo finalizar el mantenimiento.');
+        }
+    };
+
     return (
         <View style={{ flex: 1 }}>
             <FlatList
@@ -23,17 +35,19 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                     </Text>
                 }
                 renderItem={({ item }) => {
+                    const id = item.id ?? item.idMantenimiento;
                     const nombre = item?.nombre ?? item?.tipo ?? '-';
                     const fechaHecho = item?.fechaDeRealizacion ?? item?.fechaRealizacion ?? '-';
                     const fechaPara = item?.fechaARealizar ?? item?.fechaProgramada ?? '-';
                     const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
                     const patente = item?.vehiculo?.patente;
 
+
                     return (
                         <TouchableOpacity
                             onPress={() =>
                                 navigation.navigate('EditarMantenimiento', {
-                                    maintenanceId: item.id ?? item.idMantenimiento,
+                                    maintenanceId: id,
                                 })
                             }
                             style={{
@@ -45,9 +59,43 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                 marginBottom: 10,
                             }}
                         >
-                            <Text style={{ fontWeight: '600', color: done ? '#065F46' : '#111827' }}>
-                                {nombre}
-                            </Text>
+                            {/* Header con nombre + botón circular */}
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+                                }}
+                            >
+                                <Text style={{ fontWeight: '600', color: done ? '#065F46' : '#111827' }}>
+                                    {nombre}
+                                </Text>
+
+                                {/* Botón circular que actualiza backend */}
+                                <TouchableOpacity
+                                    style={{
+                                        width: 28,
+                                        height: 28,
+                                        borderRadius: 14,
+                                        borderWidth: 2,
+                                        borderColor: done ? '#047857' : '#9CA3AF',
+                                        backgroundColor: done ? '#047857' : 'transparent',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                    }}
+                                    onPress={() => {
+                                        if (!done) {
+                                            handleFinalizar(id);
+                                        }
+                                    }}
+                                >
+                                    {done && (
+                                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>✓</Text>
+                                    )}
+                                </TouchableOpacity>
+                            </View>
+
+                            {/* Resto de los datos */}
                             <Text style={{ opacity: 0.7, marginTop: 2, color: done ? '#047857' : '#374151' }}>
                                 {patente}
                             </Text>
