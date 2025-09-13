@@ -23,7 +23,7 @@ export default function CrearMantenimientoScreen() {
     // Vehículos
     const [vehiculos, setVehiculos] = useState([]);
     const [vehiculosLoading, setVehiculosLoading] = useState(true);
-    const [vehiculoId, setVehiculoId] = useState(preVehicleId ?? null);
+    const [vehiculoId, setVehiculoId] = useState(preVehicleId);
 
     useEffect(() => {
         let mounted = true;
@@ -73,7 +73,6 @@ export default function CrearMantenimientoScreen() {
         try {
             setSaving(true);
 
-
             const payload = {
                 vehiculoId: Number(vehiculoId),
                 nombre: nombre.trim(),
@@ -105,7 +104,8 @@ export default function CrearMantenimientoScreen() {
                 <TextInput
                     value={nombre}
                     onChangeText={(text) => setNombre(text.toUpperCase())}
-                    placeholder="CAMBIO DE ACEITE"
+                    placeholder="Nombre"
+                    placeholderTextColor="#aaa"
                     autoCapitalize="characters"
                     style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
                 />
@@ -131,7 +131,7 @@ export default function CrearMantenimientoScreen() {
                                 <Picker.Item
                                     key={v.id}
                                     value={v.id}
-                                    label={`${v.marca ?? ''} ${v.modelo ?? ''} ${v.patente ? `(${v.patente})` : ''}`.trim()}
+                                    label={`${v.marca ?? ''} ${v.modelo ?? ''} ${v.patente ?? ''}`.trim()}
                                 />
                             ))}
                         </Picker>
@@ -139,12 +139,13 @@ export default function CrearMantenimientoScreen() {
                 )}
 
                 {/* Fecha a realizar */}
-                <Text style={{ fontWeight: '600', marginTop: 8 }}>Fecha a realizar (YYYY-MM-DD)</Text>
+                <Text style={{ fontWeight: '600', marginTop: 8 }}>Fecha de realización</Text>
                 <TextInput
                     value={fechaARealizar}
                     onChangeText={setFechaARealizar}
-                    placeholder="2025-10-10"
+                    placeholder="YYYY-MM-DD"
                     keyboardType="numbers-and-punctuation"
+                    placeholderTextColor="#aaa"
                     style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
                 />
 
@@ -154,7 +155,8 @@ export default function CrearMantenimientoScreen() {
                     value={kmARealizar}
                     onChangeText={setKmARealizar}
                     keyboardType="numeric"
-                    placeholder="125000"
+                    placeholder="0"
+                    placeholderTextColor="#aaa"
                     style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
                 />
 

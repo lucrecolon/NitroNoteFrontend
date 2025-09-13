@@ -49,10 +49,10 @@ export default function VehiculosScreen( ) {
                                 </View>
                                 <View style={styles.containerDescription}>
                                   <Text style={styles.description}>
-                                      {item.marca} {item.modelo}
+                                      {item.marca + ' ' + item.modelo + ' - ' + item.patente}
                                   </Text>
                                   <Text style={{fontSize: 15, color:"#555"}}>
-                                      {item.kilometros} kilometros
+                                      {item.kilometros} km
                                   </Text>
                                  </View> 
                                
