@@ -98,10 +98,9 @@ export const deleteMantenimiento = async (id) => {
     return true;
 };
 
-// DELETE /mantenimiento/{id}
+// DELETE /vehiculo/{id}
 export const deleteVehicleByPatent = async (patente) => {
-    await axios.delete(`${api_endpoints.patente}/${patente}`);
-    return true;
+    await axios.delete(`${api_endpoints.vehiculo}/${patente}`);
 };
 // PUT /vehiculo/{id}  (editar campos)
 export const updateVehiculo = async (payload) => {

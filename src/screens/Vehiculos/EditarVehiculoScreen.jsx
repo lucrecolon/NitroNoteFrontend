@@ -63,8 +63,16 @@ export default function EditarVehiculoScreen() {
     }
   };
 
-  const handleCancel = () => {
-    nav.goBack();
+  const handleDeleteCar = async () => {
+        try {
+            await Api.deleteVehicleByPatent(vehiculo.patente);
+            nav.navigate('Vehiculo');
+        } catch (e) {
+              console.error(e);
+               Alert.alert('Error', 'No se pudo eliminar el vehículo.', [
+                    { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
+                  ]);
+            }
   };
 
   return (
@@ -113,7 +121,7 @@ export default function EditarVehiculoScreen() {
 
         {/* Botones */}
         <View style={styles.buttonRow}>
-          <Button title="Cancelar" onPress={handleCancel} color="#888" />
+          <Button title="Eliminar" onPress={handleDeleteCar} color="#FF684A"/>
           <Button
             title={saving ? 'Guardando...' : 'Guardar cambios'}
             onPress={handleSave}
