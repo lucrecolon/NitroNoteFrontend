@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import VehiculosScreen from "../screens/Vehiculos/VehiculosScreen";
 import CrearVehiculoScreen from "../screens/Vehiculos/CrearVehiculoScreen";
-import EditarVehiculoScreen from "../screens/Vehiculos/CrearVehiculoScreen";
+import EditarVehiculoScreen from "../screens/Vehiculos/EditarVehiculoScreen";
 
 
 const Stack = createNativeStackNavigator();

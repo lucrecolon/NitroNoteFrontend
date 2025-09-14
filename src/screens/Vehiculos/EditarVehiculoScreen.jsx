@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Toast from 'react-native-toast-message';
 import {
   View,
   Text,
@@ -16,7 +17,8 @@ import Api from '../../service/service';
 export default function EditarVehiculoScreen() {
   const nav = useNavigation();
   const route = useRoute();
-  const vehiculo = route.params?.vehiculo;
+
+  const vehiculo = route.params?.vehiculo
 
   const [kilometros, setKilometros] = useState(String(vehiculo.kilometros));
   const [saving, setSaving] = useState(false);
@@ -25,29 +27,38 @@ export default function EditarVehiculoScreen() {
     const kmNuevo = Number(kilometros);
 
     if (isNaN(kmNuevo)) {
-      Alert.alert('Error', 'Los kilómetros deben ser un número.');
-      return;
-    }
+       Alert.alert('Error', 'El valor de kilometros no puede estar vacío.', [
+         { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
+       ]);
+       return;
+     }
 
-    if (kmNuevo < vehiculo.kilometros) {
-      Alert.alert('Error', 'Los kilómetros no pueden ser menor que el anterior.');
-      return;
-    }
+     if (kmNuevo < vehiculo.kilometros) {
+       Alert.alert(
+         'Error',
+         'El kilometraje no puede ser menor al actual.',
+         [
+           { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
+         ],
+         { cancelable: false } // obliga al usuario a tocar OK
+       );
+       return;
+     }
 
     try {
       setSaving(true);
 
-      // 👉 Clonamos el vehículo y actualizamos solo km
       const actualizado = { ...vehiculo, kilometros: kmNuevo };
-
       await Api.updateVehiculo(actualizado);
 
       Alert.alert('Éxito', 'Los cambios se guardaron con éxito.', [
-        { text: 'OK', onPress: () => nav.navigate('Vehiculos') },
+        { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
       ]);
     } catch (e) {
       console.error(e);
-      Alert.alert('Error', 'No se pudo actualizar el vehículo.');
+       Alert.alert('Error', 'No se pudo actualizar el vehículo.', [
+            { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
+          ]);
     } finally {
       setSaving(false);
     }
@@ -58,10 +69,6 @@ export default function EditarVehiculoScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.select({ ios: 'padding', android: undefined })}
-    >
       <ScrollView contentContainerStyle={styles.container}>
         {/* Marca */}
         <Text style={styles.label}>Marca</Text>
@@ -96,6 +103,15 @@ export default function EditarVehiculoScreen() {
           style={styles.input}
         />
 
+        {/* Año */}
+        <Text style={styles.label}>Año</Text>
+        <TextInput
+          value={vehiculo.anio.toString()}
+          editable={false}
+          keyboardType="numeric"
+          style={[styles.input, styles.disabled]}
+        />
+
         {/* Botones */}
         <View style={styles.buttonRow}>
           <Button title="Cancelar" onPress={handleCancel} color="#888" />
@@ -106,7 +122,6 @@ export default function EditarVehiculoScreen() {
           />
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
   );
 }
 

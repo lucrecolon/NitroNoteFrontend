@@ -31,7 +31,7 @@ export default function VehiculosScreen() {
   };
 
 const handleEditVehiculo = (vehiculo) => {
-  navigation.navigate("EditarVehiculoScreen", { vehiculo });
+  navigation.navigate("Editar Vehiculo", {vehiculo});
 };
 
   const fetchVehiculos = async () => {

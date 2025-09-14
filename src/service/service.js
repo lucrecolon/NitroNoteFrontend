@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-
-const api_base_url = 'http://localhost:8080';
+const api_base_url = 'http://192.168.1.35:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -105,8 +104,8 @@ export const deleteVehicleByPatent = async (patente) => {
     return true;
 };
 // PUT /vehiculo/{id}  (editar campos)
-export const updateVehiculo = async (id, payload) => {
-    const { data } = await axios.put(`${api_endpoints.vehiculo}/${id}`, payload);
+export const updateVehiculo = async (payload) => {
+    const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload);
     console.log(data);
     return data;
 };
