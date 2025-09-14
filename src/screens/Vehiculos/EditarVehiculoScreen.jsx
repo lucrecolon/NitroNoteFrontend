@@ -38,9 +38,9 @@ export default function EditarVehiculoScreen() {
          'Error',
          'El kilometraje no puede ser menor al actual.',
          [
-           { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
+           { text: 'OK' }, // No mover al usuario de la pantalla actual, solo informar y que pueda continuar la operación -dpolverigiani
          ],
-         { cancelable: false } // obliga al usuario a tocar OK
+         { cancelable: false }
        );
        return;
      }
