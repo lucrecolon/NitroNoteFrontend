@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Toast from 'react-native-toast-message';
 import {
   View,
   Text,
