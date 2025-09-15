@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-
-const api_base_url = 'http://localhost:8080';
+const api_base_url = 'http://192.168.1.35:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -99,6 +98,16 @@ export const deleteMantenimiento = async (id) => {
     return true;
 };
 
+// DELETE /vehiculo/{id}
+export const deleteVehicleByPatent = async (patente) => {
+    await axios.delete(`${api_endpoints.vehiculo}/${patente}`);
+};
+// PUT /vehiculo/{id}  (editar campos)
+export const updateVehiculo = async (payload) => {
+    const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload);
+    console.log(data);
+    return data;
+};
 
 const Api = {
     getAllvehiculos,
@@ -109,6 +118,8 @@ const Api = {
     updateMantenimiento,
     finalizarMantenimiento,
     deleteMantenimiento,
+    deleteVehicleByPatent,
+    updateVehiculo
 }
 
 export default Api;

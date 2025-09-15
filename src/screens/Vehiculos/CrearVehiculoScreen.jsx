@@ -79,7 +79,7 @@ export default function DetalleVehiculoScreen() {
           return;
         }
 
-        if (isNaN(kilometros) || kilometros <= 0 || Number.isInteger(anio)) {
+        if (isNaN(kilometros) || kilometros < 0 || Number.isInteger(anio)) {
           Toast.show({
             type: 'error',
             text1: 'Los kilometros tienen que ser mayor o igual a 0',
