@@ -3,6 +3,7 @@ import LoginScreen from '../screens/LoginScreen';
 import MainTabs from './MainTabs';
 import CrearVehiculoScreen from '../screens/Vehiculos/CrearVehiculoScreen'
 import VehiculosScreen from '../screens/Vehiculos/VehiculosScreen';
+import EditarVehiculoScreen from '../screens/Vehiculos/EditarVehiculoScreen';
 
 const Stack = createNativeStackNavigator();
 export default function StackNavigator() {

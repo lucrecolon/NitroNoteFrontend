@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-
-const api_base_url = 'http://10.0.2.2:8080';
+const api_base_url = 'http://192.168.1.35:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -72,8 +71,20 @@ export const createMantenimiento = async (payload) => {
 // PUT /mantenimiento/{id}  (editar campos)
 export const updateMantenimiento = async (id, payload) => {
     const { data } = await axios.put(`${api_endpoints.mantenimiento}/${id}`, payload);
+    console.log(data);
     return data;
 };
+
+/*
+export const finalizarMantenimiento = async (id) => {
+    try {
+        await axios.patch(`${api_endpoints.mantenimiento}/${id}/finalizar`);
+        return true; // no hay body, devolvemos un booleano para indicar éxito
+    } catch (err) {
+        console.error(`[finalizarMantenimiento] error con id=${id}`, err.response?.data || err.message);
+        throw err;
+    }
+};*/
 
 // PATCH /mantenimiento/{id}/complete  (si tenés endpoint para marcar hecho)
 export const finalizarMantenimiento = async (id) => {
@@ -87,6 +98,16 @@ export const deleteMantenimiento = async (id) => {
     return true;
 };
 
+// DELETE /vehiculo/{id}
+export const deleteVehicleByPatent = async (patente) => {
+    await axios.delete(`${api_endpoints.vehiculo}/${patente}`);
+};
+// PUT /vehiculo/{id}  (editar campos)
+export const updateVehiculo = async (payload) => {
+    const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload);
+    console.log(data);
+    return data;
+};
 
 const Api = {
     getAllvehiculos,
@@ -97,6 +118,8 @@ const Api = {
     updateMantenimiento,
     finalizarMantenimiento,
     deleteMantenimiento,
+    deleteVehicleByPatent,
+    updateVehiculo
 }
 
 export default Api;
