@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+import { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { createMantenimiento, getAllvehiculos } from '../../service/service';
 import {
   View,
   Text,
@@ -10,24 +13,37 @@ import {
   Platform,
   ScrollView,
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { createMantenimiento, getAllvehiculos } from '../../service/service';
-import { Picker } from '@react-native-picker/picker';
 
 export default function CrearMantenimientoScreen() {
   const nav = useNavigation();
   const route = useRoute();
 
-  // Si viene desde un auto, se puede setear preseleccionado
   const preVehicleId = route.params?.vehicleId ?? null;
 
-  // Form
+  const mantenimientosDisponibles = [
+    { value: 'Cambio de aceite',              label: 'Cambio de aceite' },
+    { value: 'Correa de distribucion',        label: 'Correa de distribución' },
+    { value: 'Pastillas de freno',            label: 'Pastillas de freno' },
+    { value: 'Alineacion y balanceo',         label: 'Alineación y balanceo' },
+    { value: 'Revision general',              label: 'Revisión general' },
+    { value: 'Cambio de escobillas',          label: 'Cambio de escobillas'},
+    { value: 'Engrase de rodamientos',        label: 'Engrase de rodamientos'},
+    { value: 'Completar nivel de liquidos',   label: 'Completar nivel de líquidos'},
+    { value: 'Revisar presion de neumaticos', label: 'Revisar presión de neumáticos'},
+    { value: 'Cambio filtro de aceite',       label: 'Cambio filtro de aceite'},
+    { value: 'Cambio filtro de combustible',  label: 'Cambio filtro de combustible'},
+    { value: 'Bujias',                        label: 'Bujías'},
+    { value: 'Discos de freno',               label: 'Discos de freno'},
+    { value: 'Liquido refrigerante',          label: 'Líquido refrigerante'},
+    { value: 'Bateria',                       label: 'Batería'},
+
+  ];
+
   const [nombre, setNombre] = useState('');
   const [fechaARealizar, setFechaARealizar] = useState(''); // "YYYY-MM-DD"
   const [kmARealizar, setKmARealizar] = useState('');
   const [saving, setSaving] = useState(false);
 
-  // Vehículos
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculosLoading, setVehiculosLoading] = useState(true);
   const [vehiculoId, setVehiculoId] = useState(preVehicleId);
@@ -54,8 +70,8 @@ export default function CrearMantenimientoScreen() {
   }, [preVehicleId]);
 
   const validar = () => {
-    if (!nombre.trim()) {
-      Alert.alert('Validación', 'Completá el nombre del mantenimiento.');
+    if (!nombre) {
+      Alert.alert('Validación', 'Seleccioná el nombre del mantenimiento.');
       return false;
     }
     if (!vehiculoId) {
@@ -63,10 +79,7 @@ export default function CrearMantenimientoScreen() {
       return false;
     }
     if (fechaARealizar && !/^\d{4}-\d{2}-\d{2}$/.test(fechaARealizar)) {
-      Alert.alert(
-        'Validación',
-        'La fecha debe ser YYYY-MM-DD (ej: 2025-10-10).'
-      );
+      Alert.alert('Validación', 'La fecha debe ser YYYY-MM-DD (ej: 2025-10-10).');
       return false;
     }
     if (kmARealizar && isNaN(Number(kmARealizar))) {
@@ -74,10 +87,7 @@ export default function CrearMantenimientoScreen() {
       return false;
     }
     if (!fechaARealizar && !kmARealizar) {
-      Alert.alert(
-        'Validación',
-        'Debés ingresar una fecha o un kilometraje.'
-      );
+      Alert.alert('Validación', 'Debés ingresar una fecha o un kilometraje.');
       return false;
     }
     if (fechaARealizar) {
@@ -86,14 +96,10 @@ export default function CrearMantenimientoScreen() {
       fechaARealizarAsDate.setHours(0, 0, 0, 0);
       today.setHours(0, 0, 0, 0);
       if (fechaARealizarAsDate < today) {
-        Alert.alert(
-          'Validación',
-          'La fecha ingresada debe ser mayor al día actual.'
-        );
+        Alert.alert('Validación', 'La fecha ingresada debe ser mayor al día actual.');
         return false;
       }
     }
-
     return true;
   };
 
@@ -104,7 +110,7 @@ export default function CrearMantenimientoScreen() {
 
       const payload = {
         vehiculoId: Number(vehiculoId),
-        nombre: nombre.trim(),
+        nombre,
         fechaARealizar: fechaARealizar || null,
         kmARealizar: kmARealizar ? Number(kmARealizar) : 0,
       };
@@ -112,110 +118,109 @@ export default function CrearMantenimientoScreen() {
       await createMantenimiento(payload);
 
       Alert.alert('Listo', 'Mantenimiento creado correctamente.');
-      nav.goBack(); // 👈 se vuelve, y la lista se refresca sola con useFocusEffect
+      nav.goBack();
     } catch (e) {
       console.error(e);
-      Alert.alert(
-        'Error',
-        'No se pudo crear el mantenimiento. Verificá la conexión y la URL del backend.'
-      );
+      Alert.alert('Error', 'No se pudo crear el mantenimiento.');
     } finally {
       setSaving(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.select({ ios: 'padding', android: undefined })}
-    >
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 12 }}>
-        {/* Nombre */}
-        <Text style={{ fontWeight: '600' }}>Nombre</Text>
-        <TextInput
-          value={nombre}
-          onChangeText={(text) => setNombre(text.toUpperCase())}
-          placeholder="Nombre"
-          placeholderTextColor="#aaa"
-          autoCapitalize="characters"
-          style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
-        />
-
-        {/* Vehículo */}
-        <Text style={{ fontWeight: '600', marginTop: 8 }}>Vehículo</Text>
-        {vehiculosLoading ? (
-          <ActivityIndicator />
-        ) : vehiculos.length === 0 ? (
-          <>
-            <Text style={{ opacity: 0.7, marginBottom: 8 }}>
-              No hay vehículos cargados. Creá uno antes de registrar un
-              mantenimiento.
-            </Text>
-            <Button
-              title="Crear vehículo"
-              onPress={() =>
-                nav.navigate('Vehiculos', { screen: 'Crear Vehiculo' })
-              }
-            />
-          </>
-        ) : (
+      <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.select({ ios: 'padding', android: undefined })}
+      >
+        <ScrollView contentContainerStyle={{ padding: 16, gap: 12 }}>
+          {}
+          <Text style={{ fontWeight: '600' }}>Nombre del mantenimiento</Text>
           <View style={{ borderWidth: 1, borderRadius: 8, overflow: 'hidden' }}>
             <Picker
-              selectedValue={vehiculoId}
-              onValueChange={(val) => setVehiculoId(val)}
+                selectedValue={nombre}
+                onValueChange={(val) => setNombre(val)}
             >
-              {vehiculos.map((v) => (
-                <Picker.Item
-                  key={v.id}
-                  value={v.id}
-                  label={`${v.marca ?? ''} ${v.modelo ?? ''} ${
-                    v.patente ?? ''
-                  }`.trim()}
-                />
+              <Picker.Item label="Selecciona un mantenimiento..." value="" />
+              {mantenimientosDisponibles.map((m) => (
+                  <Picker.Item key={m.value} label={m.label} value={m.value} />
               ))}
             </Picker>
           </View>
-        )}
 
-        {/* Fecha a realizar */}
-        <Text style={{ fontWeight: '600', marginTop: 8 }}>
-          Fecha de realización
-        </Text>
-        <TextInput
-          value={fechaARealizar}
-          onChangeText={setFechaARealizar}
-          placeholder="YYYY-MM-DD"
-          keyboardType="numbers-and-punctuation"
-          placeholderTextColor="#aaa"
-          style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
-        />
+          {/* Vehículo */}
+          <Text style={{ fontWeight: '600', marginTop: 8 }}>Vehículo</Text>
+          {vehiculosLoading ? (
+              <ActivityIndicator />
+          ) : vehiculos.length === 0 ? (
+              <>
+                <Text style={{ opacity: 0.7, marginBottom: 8 }}>
+                  No hay vehículos cargados. Creá uno antes de registrar un
+                  mantenimiento.
+                </Text>
+                <Button
+                    title="Crear vehículo"
+                    onPress={() =>
+                        nav.navigate('Vehiculos', { screen: 'Crear Vehiculo' })
+                    }
+                />
+              </>
+          ) : (
+              <View style={{ borderWidth: 1, borderRadius: 8, overflow: 'hidden' }}>
+                <Picker
+                    selectedValue={vehiculoId}
+                    onValueChange={(val) => setVehiculoId(val)}
+                >
+                  {vehiculos.map((v) => (
+                      <Picker.Item
+                          key={v.id}
+                          value={v.id}
+                          label={`${v.marca ?? ''} ${v.modelo ?? ''} ${v.patente ?? ''}`.trim()}
+                      />
+                  ))}
+                </Picker>
+              </View>
+          )}
 
-        {/* Km a realizar */}
-        <Text style={{ fontWeight: '600', marginTop: 8 }}>Km a realizar</Text>
-        <TextInput
-          value={kmARealizar}
-          onChangeText={setKmARealizar}
-          keyboardType="numeric"
-          placeholder="0"
-          placeholderTextColor="#aaa"
-          style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
-        />
+          {/* Fecha a realizar */}
+          <Text style={{ fontWeight: '600', marginTop: 8 }}>
+            Fecha de realización
+          </Text>
+          <TextInput
+              value={fechaARealizar}
+              onChangeText={setFechaARealizar}
+              placeholder="YYYY-MM-DD"
+              keyboardType="numbers-and-punctuation"
+              placeholderTextColor="#aaa"
+              style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
+          />
 
-        {/* Guardar */}
-        {saving ? (
-          <View style={{ marginTop: 12 }}>
-            <ActivityIndicator />
-          </View>
-        ) : (
-          <View style={{ marginTop: 12 }}>
-            <Button
-              title="Guardar"
-              onPress={onSave}
-              disabled={vehiculosLoading || vehiculos.length === 0}
-            />
-          </View>
-        )}
-      </ScrollView>
-    </KeyboardAvoidingView>
+          {/* Km a realizar */}
+          <Text style={{ fontWeight: '600', marginTop: 8 }}>Km a realizar</Text>
+          <TextInput
+              value={kmARealizar}
+              onChangeText={setKmARealizar}
+              keyboardType="numeric"
+              placeholder="0"
+              placeholderTextColor="#aaa"
+              style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
+          />
+
+          {/* Guardar */}
+          {saving ? (
+              <View style={{ marginTop: 12 }}>
+                <ActivityIndicator />
+              </View>
+          ) : (
+              <View style={{ marginTop: 12 }}>
+                <Button
+                    title="Guardar"
+                    onPress={onSave}
+                    color="#007BFF"
+                    disabled={vehiculosLoading || vehiculos.length === 0}
+                />
+              </View>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
   );
 }
