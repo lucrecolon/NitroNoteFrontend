@@ -4,7 +4,7 @@ import { View, Text, TextInput, ActivityIndicator, ScrollView, Button } from 're
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
-import { MARCAS, MODELOS } from '../../constants/brands.js';
+import { MARCAS, MODELOS_BY_MARCA } from '../../constants/brands.js';
 
 export default function DetalleVehiculoScreen() {
   const [marca, setMarca] = useState("");
@@ -21,107 +21,60 @@ export default function DetalleVehiculoScreen() {
   };
 
   const fetchCreateVehiculo = async () => {
-    const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     const patenteRegex = /^([A-Za-z]{2}\d{3}[A-Za-z]{2}|[A-Za-z]{3}\d{3})$/;
 
     try {
       setLoading(true);
 
       if (!marca.trim()) {
-        Toast.show({
-          type: 'error',
-          text1: 'Debe seleccionar una marca',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
+        Toast.show({ type: 'error', text1: 'Debe seleccionar una marca', position: 'top' });
         return;
       }
 
       if (!modelo.trim()) {
-        Toast.show({
-          type: 'error',
-          text1: 'Debe seleccionar un modelo',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
+        Toast.show({ type: 'error', text1: 'Debe seleccionar un modelo', position: 'top' });
         return;
       }
 
       if (!patenteRegex.test(patente)) {
-        Toast.show({
-          type: 'error',
-          text1: 'Formato de la patente invalido',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
+        Toast.show({ type: 'error', text1: 'Formato de la patente invalido', position: 'top' });
         return;
       }
 
       if (isNaN(anio) || anio < 1900 || anio > 2025) {
-        Toast.show({
-          type: 'error',
-          text1: 'Año ingresado invalido',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
+        Toast.show({ type: 'error', text1: 'Año ingresado invalido', position: 'top' });
         return;
       }
 
       if (isNaN(kilometros) || kilometros < 0) {
-        Toast.show({
-          type: 'error',
-          text1: 'Los kilometros tienen que ser mayor o igual a 0',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
+        Toast.show({ type: 'error', text1: 'Los kilometros deben ser >= 0', position: 'top' });
         return;
       }
 
-      await Api.createVehiculo(marca, modelo, patente, kilometros, anio).then(() => {
-        Toast.show({
-          type: 'success',
-          text1: 'Vehiculo creado con exito',
-          position: 'top',
-          autoHide: true,
-          visibilityTime: 3000,
-        });
-      });
-
+      await Api.createVehiculo(marca, modelo, patente, kilometros, anio);
+      Toast.show({ type: 'success', text1: 'Vehiculo creado con exito', position: 'top' });
       handleCreateVehiculo();
     } catch (e) {
       Toast.show({
         type: 'error',
         text1: `${e.response?.data?.message || 'Error al crear el vehículo'}`,
-        position: 'top',
-        autoHide: true,
-        visibilityTime: 3000,
+        position: 'top'
       });
     } finally {
       setLoading(false);
     }
   };
 
+  const modelosDisponibles = marca ? MODELOS_BY_MARCA[marca] || [] : [];
+
   return (
     <ScrollView contentContainerStyle={{ padding: 16, gap: 12 }}>
       {/* Marca */}
       <Text style={{ fontWeight: '600' }}>Marca</Text>
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: '#ccc',
-          borderRadius: 8,
-          backgroundColor: '#fff',
-          paddingHorizontal: 8,
-        }}
-      >
+      <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, backgroundColor: '#fff', paddingHorizontal: 8 }}>
         <Picker
           selectedValue={marca}
-          onValueChange={(itemValue) => setMarca(itemValue)}
+          onValueChange={(itemValue) => { setMarca(itemValue); setModelo(""); }}
           style={{ height: 50 }}
           mode="dropdown"
         >
@@ -134,23 +87,16 @@ export default function DetalleVehiculoScreen() {
 
       {/* Modelo */}
       <Text style={{ fontWeight: '600', marginTop: 8 }}>Modelo</Text>
-      <View
-        style={{
-          borderWidth: 1,
-          borderColor: '#ccc',
-          borderRadius: 8,
-          backgroundColor: '#fff',
-          paddingHorizontal: 8,
-        }}
-      >
+      <View style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, backgroundColor: '#fff', paddingHorizontal: 8 }}>
         <Picker
+          enabled={!!marca}
           selectedValue={modelo}
           onValueChange={(itemValue) => setModelo(itemValue)}
           style={{ height: 50 }}
           mode="dropdown"
         >
-          <Picker.Item label="Selecciona un modelo..." value="" />
-          {MODELOS.map((m) => (
+          <Picker.Item label={marca ? "Selecciona un modelo..." : "Selecciona una marca primero"} value="" />
+          {modelosDisponibles.map((m) => (
             <Picker.Item key={m} label={m} value={m} />
           ))}
         </Picker>
