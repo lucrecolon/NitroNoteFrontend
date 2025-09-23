@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api_base_url = 'http://192.168.1.35:8080';
+const api_base_url = 'http://192.168.1.33:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
@@ -60,7 +60,7 @@ export const getMantenimientoById = async (id) => {
 // POST /mantenimiento
 export const createMantenimiento = async (payload) => {
     try {
-        const { data } = await axios.post(api_endpoints.mantenimiento, payload);
+        const { data } = await axios.post(`${api_endpoints.mantenimiento}/${payload.vehiculoId}`, payload);
         return data; // puede ser el id generado o el objeto creado, según tu back
     } catch (err) {
         console.error('[createMantenimiento] error', err.response?.data || err.message);
