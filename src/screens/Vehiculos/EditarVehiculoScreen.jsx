@@ -68,7 +68,7 @@ export default function EditarVehiculoScreen() {
             await Api.deleteVehicleByPatent(vehiculo.patente);
             nav.navigate('Vehiculo');
         } catch (e) {
-              console.error(e);
+              console.error(e.response);
                Alert.alert('Error', 'No se pudo eliminar el vehículo.', [
                     { text: 'OK', onPress: () => nav.navigate('Vehiculo') },
                   ]);
