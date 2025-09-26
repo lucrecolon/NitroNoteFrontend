@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api_base_url = 'http://192.168.1.34:8080';
+const api_base_url = 'http://192.168.1.40r:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
