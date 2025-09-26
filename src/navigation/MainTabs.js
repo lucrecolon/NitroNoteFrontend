@@ -32,7 +32,6 @@ export default function MainTabs() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="Perfil" component={PerfilScreen} />
       <Tab.Screen
           name="Vehiculos"
           component={VehiculoStack}

@@ -4,14 +4,15 @@ const api_base_url = 'http://192.168.1.33:8080';
 
 const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
-    mantenimiento: `${api_base_url}/mantenimiento`
+    mantenimiento: `${api_base_url}/mantenimiento`,
+    register: `${api_base_url}/register`
 }
 
 //Vehiculo
 export const getAllvehiculos = async () => {
 
     try{
-        const {data} = await axios.get(`${api_endpoints.vehiculo}`)
+        const {data} = await axios.get(`${api_endpoints.vehiculo}/all`)
         return data
     }
     catch(e){
@@ -75,16 +76,6 @@ export const updateMantenimiento = async (id, payload) => {
     return data;
 };
 
-/*
-export const finalizarMantenimiento = async (id) => {
-    try {
-        await axios.patch(`${api_endpoints.mantenimiento}/${id}/finalizar`);
-        return true; // no hay body, devolvemos un booleano para indicar éxito
-    } catch (err) {
-        console.error(`[finalizarMantenimiento] error con id=${id}`, err.response?.data || err.message);
-        throw err;
-    }
-};*/
 
 // PATCH /mantenimiento/{id}/complete  (si tenés endpoint para marcar hecho)
 export const finalizarMantenimiento = async (id) => {
@@ -109,7 +100,24 @@ export const updateVehiculo = async (payload) => {
     return data;
 };
 
+const register = async (name, email, pass) => {
+    const body = {
+        nombre: name,
+        email: email, 
+        password: pass
+    }
+    try{
+        await axios.post(`${api_endpoints.register}`, body);
+        return;
+    }
+    catch(e){
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
 const Api = {
+    register,
     getAllvehiculos,
     createVehiculo,
     getAllMantenimientos,
