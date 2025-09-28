@@ -1,13 +1,23 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {Text, TextInput, TouchableOpacity } from "react-native";
+import Api from "../../service/service";
+import { AuthContext } from "../../hooks/AuthContext";
 
 export default function LoginScreen({ navigation }) {
     
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");    
+    const [password, setPassword] = useState("");
+     const {setUser} = useContext(AuthContext);
       
-    const handleLogin = () => {
-        navigation.replace("MainTabs");
+    const handleLogin = async ()  => {
+        try{
+            const user = await Api.login(email, password);
+            setUser(user);
+            navigation.replace("MainTabs");
+        }
+        catch(e){
+           // console.log(e)
+        }
     };
     return(
         <>
