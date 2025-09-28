@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Text, TextInput, TouchableOpacity } from "react-native";
 import Toast from "react-native-toast-message";
 import Api from "../../service/service";
@@ -16,9 +16,6 @@ export default function LoginScreen({ navigation }) {
 
     const handleRegister = async ()=>{
       const emailRegex = /^[A-Za-z0-9._%+-]+@(gmail\.com|hotmail\.com)$/
-      console.log(email)
-      console.log(isBlank(name))
-      console.log(password)
       if(isBlank(name) || isBlank(email) || isBlank(password)){
         Toast.show({type:"error", text1:"Los campos no pueden estar vacios", position:'top'})
         return;
