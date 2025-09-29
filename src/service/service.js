@@ -16,7 +16,8 @@ const api_endpoints = {
     vehiculo: `${api_base_url}/vehiculo`,
     mantenimiento: `${api_base_url}/mantenimiento`,
     register: `${api_base_url}/register`,
-    login: `${api_base_url}/login`
+    login: `${api_base_url}/login`,
+    user: `${api_base_url}/user`,
 }
 
 //Vehiculo
@@ -32,14 +33,15 @@ export const getAllvehiculos = async () => {
 };
 
 
-const createVehiculo = async (marca, modelo, patente, kilometros, anio) => {
+const createVehiculo = async (marca, modelo, patente, kilometros, anio, userId) => {
     
     const body = {
         patente: patente,
         marca: marca,
         modelo: modelo,
         anio: anio,
-        kilometros: kilometros
+        kilometros: kilometros,
+        usuarioID: userId
     }
     try{
         const config = await getConfig();
@@ -94,9 +96,14 @@ export const updateMantenimiento = async (id, payload) => {
 
 // PATCH /mantenimiento/{id}/complete  (si tenés endpoint para marcar hecho)
 export const finalizarMantenimiento = async (id) => {
-    const config = await getConfig();
-    const { data } = await axios.patch(`${api_endpoints.mantenimiento}/${id}/finalizar`, config);
-    return data;
+    try{
+        const config = await getConfig();
+        const { data } = await axios.patch(`${api_endpoints.mantenimiento}/${id}/finalizar`,{}, config);
+        return data;
+    }
+    catch(e){
+        return Promise.reject(e.response)
+    }
 };
 
 // DELETE /mantenimiento/{id}
@@ -113,10 +120,13 @@ export const deleteVehicleByPatent = async (patente) => {
 };
 // PUT /vehiculo/{id}  (editar campos)
 export const updateVehiculo = async (payload) => {
-    const config = await getConfig();
-    const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload, config);
-    console.log(data);
-    return data;
+    try{
+        const config = await getConfig();
+        const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload, config);
+        return data;
+    }catch(e){
+        Promise.reject(e.response);
+    }
 };
 
 const register = async (name, email, pass) => {
@@ -149,9 +159,34 @@ const login = async (email, pass) =>{
     }
 }
 
+const getUserAllvehiculos = async (id) => {
+    try{
+        const config = await getConfig();
+        const {data} = await axios.get(`${api_endpoints.vehiculo}/${id}`, config);
+        return data;
+    }
+    catch(e){
+        return Promise.reject(e)
+    }
+}
+
+const getUser = async () =>{
+    try{
+        const config = await getConfig();
+        const response = await axios.get(`${api_endpoints.user}`, config);
+        console.log(response)
+        return response
+    }
+    catch(e){
+        return Promise.reject(e)
+    }
+}
+
 const Api = {
     register,
     login,
+    getUser,
+    getUserAllvehiculos,
     getAllvehiculos,
     createVehiculo,
     getAllMantenimientos,

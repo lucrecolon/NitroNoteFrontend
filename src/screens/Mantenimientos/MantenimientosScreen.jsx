@@ -46,7 +46,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                        const fechaHecho = item?.fechaDeRealizacion ?? item?.fechaRealizacion ?? '-';
                        const fechaPara = item?.fechaARealizar ?? item?.fechaProgramada ?? '-';
                        const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
-                       const patente = item?.vehiculo?.patente;
+                       const patente = item?.vehiculoId;
 
                        return (
                            <View
@@ -84,7 +84,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                </View>
 
                                {/* Datos */}
-                               <View style={{ marginTop: -20 }}>
+                               <View >
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente}</Text>
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
                                        {done ? `Hecho el ${fechaHecho}` : `Realizar el ${fechaPara}`}

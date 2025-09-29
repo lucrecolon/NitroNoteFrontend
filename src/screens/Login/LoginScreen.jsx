@@ -1,22 +1,24 @@
 import { useState, useContext } from "react";
-import {Text, TextInput, TouchableOpacity } from "react-native";
-import Api from "../../service/service";
+import { Text, TextInput, TouchableOpacity } from "react-native";
 import { AuthContext } from "../../hooks/AuthContext";
+import Toast from "react-native-toast-message";
+import Api from "../../service/service";
 
 export default function LoginScreen({ navigation }) {
     
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-     const {setUser} = useContext(AuthContext);
-      
+    const {setUser} = useContext(AuthContext);
+    
     const handleLogin = async ()  => {
         try{
             const user = await Api.login(email, password);
             setUser(user);
+            Toast.show({type:"success", text1:'Inicio de session con exito',  position: 'top' })
             navigation.replace("MainTabs");
         }
         catch(e){
-           // console.log(e)
+           Toast.show({type:"error", text1:'Usuario o contraseña invalidos',  position: 'top' })
         }
     };
     return(

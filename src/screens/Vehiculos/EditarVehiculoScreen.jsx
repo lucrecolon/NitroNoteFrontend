@@ -23,6 +23,7 @@ export default function EditarVehiculoScreen() {
   const [saving, setSaving] = useState(false);
 
   const handleSave = async () => {
+    console.log(vehiculo)
     const kmNuevo = Number(kilometros);
 
     if (isNaN(kmNuevo)) {
