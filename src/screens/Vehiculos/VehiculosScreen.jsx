@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import Api from '../../service/service';
 import {
   View,
@@ -12,11 +12,13 @@ import {
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'; // 👈 importar iconos
+import { AuthContext } from '../../hooks/AuthContext';
 
 export default function VehiculosScreen() {
   const [vehiculos, setVehiculos] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+  const {user} = useContext(AuthContext);
 
   // 👉 Acción al finalizar mantenimiento
   const deleteVehicleByPatent = async (patente) => {
@@ -37,7 +39,7 @@ const handleEditVehiculo = (vehiculo) => {
   const fetchVehiculos = async () => {
     try {
       setRefreshing(true);
-      const allvehiculos = await Api.getAllvehiculos();
+      const allvehiculos = await Api.getUserAllvehiculos(user.id);
       setVehiculos(allvehiculos);
     } catch (e) {
       console.error(e);

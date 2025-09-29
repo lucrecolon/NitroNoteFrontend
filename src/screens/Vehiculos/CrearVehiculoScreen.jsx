@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Api from '../../service/service';
 import { View, Text, TextInput, ActivityIndicator, ScrollView, Button } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import { MARCAS, MODELOS_BY_MARCA } from '../../constants/brands.js';
+import { AuthContext } from '../../hooks/AuthContext.jsx';
 
 export default function DetalleVehiculoScreen() {
   const [marca, setMarca] = useState("");
@@ -13,7 +14,7 @@ export default function DetalleVehiculoScreen() {
   const [kilometros, setKilometros] = useState();
   const [anio, setAnio] = useState();
   const [loading, setLoading] = useState(false);
-
+  const {user} = useContext(AuthContext);
   const navigation = useNavigation();
 
   const handleCreateVehiculo = () => {
@@ -51,7 +52,7 @@ export default function DetalleVehiculoScreen() {
         return;
       }
 
-      await Api.createVehiculo(marca, modelo, patente, kilometros, anio);
+      await Api.createVehiculo(marca, modelo, patente, kilometros, anio, user.id);
       Toast.show({ type: 'success', text1: 'Vehiculo creado con exito', position: 'top' });
       handleCreateVehiculo();
     } catch (e) {
