@@ -40,7 +40,7 @@ export default function LoginScreen({ navigation }) {
       try{
         Api.register(name, email, password);
         Toast.show({type:"success", text1:'Usuario registrado con exito',  position: 'top' })
-        navigation.replace('MainTabs')
+        navigation.replace('Home')
       }
       catch(e){
         Toast.show({ type: 'error', text1: 'No se pudo registar con exito', position: 'top' })
