@@ -14,38 +14,37 @@ export default function LoginScreen({ navigation }) {
       return !value || value.trim().length === 0;
     };
 
-    const handleRegister = async ()=>{
-      const emailRegex = /^[A-Za-z0-9._%+-]+@(gmail\.com|hotmail\.com)$/
-      if(isBlank(name) || isBlank(email) || isBlank(password)){
-        Toast.show({type:"error", text1:"Los campos no pueden estar vacios", position:'top'})
-        return;
-      }
-      if(!emailRegex.test(email)){
-        Toast.show({type:"error", text1:"Formato email incorrecto", position:'top'})
-        return;
-      }
-      if(isBlank(name)){
-        Toast.show({type:"error", text1:"El nombre no puede ser vacio", position:'top'})
-        return;
-      }
-      if(password.length < 8){
-        Toast.show({type:"error", text1:"La contraseña debe tener minimo 8 caracteres", position:'top'})
-        return;
-      }
+    const handleRegister = async () => {
+        const emailRegex = /^[A-Za-z0-9._%+-]+@(gmail\.com|hotmail\.com)$/;
+        if (isBlank(name) || isBlank(email) || isBlank(password)) {
+            Toast.show({ type: "error", text1: "Los campos no pueden estar vacíos", position: "top" });
+            return;
+        }
+        if (!emailRegex.test(email)) {
+            Toast.show({ type: "error", text1: "Formato email incorrecto", position: "top" });
+            return;
+        }
+        if (password.length < 8) {
+            Toast.show({ type: "error", text1: "La contraseña debe tener mínimo 8 caracteres", position: "top" });
+            return;
+        }
+        if (password !== confirmPassword) {
+            Toast.show({ type: "error", text1: "Las contraseñas no coinciden", position: "top" });
+            return;
+        }
+        try {
+            await Api.register(name, email, password);
+            Toast.show({ type: "success", text1: "Usuario registrado con éxito", position: "top" });
+            navigation.replace("MainTabs");
+        } catch (err) {
+            if (err.response?.status === 409) {
+                Toast.show({ type: "error", text1: "Dirección de correo electrónico ya registrada", position: "top" });
+            } else {
+                Toast.show({ type: "error", text1: "No se pudo registrar. Intente más tarde", position: "top" });
+            }
+        }
+    };
 
-      if(password != confirmPassword){
-        Toast.show({type:"error", text1:"Las constraseñas no coinciden", position:'top'})
-        return;
-      }
-      try{
-        Api.register(name, email, password);
-        Toast.show({type:"success", text1:'Usuario registrado con exito',  position: 'top' })
-        navigation.replace('MainTabs')
-      }
-      catch(e){
-        Toast.show({ type: 'error', text1: 'No se pudo registar con exito', position: 'top' })
-      }
-    }
 
     return(
         <>
