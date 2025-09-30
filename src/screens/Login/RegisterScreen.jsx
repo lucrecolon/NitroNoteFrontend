@@ -35,7 +35,7 @@ export default function LoginScreen({ navigation }) {
         try {
             await Api.register(name, email, password);
             Toast.show({ type: "success", text1: "Usuario registrado con éxito", position: "top" });
-            navigation.replace("MainTabs");
+            navigation.replace("Login");
         } catch (err) {
             if (err.response?.status === 409) {
                 Toast.show({ type: "error", text1: "Dirección de correo electrónico ya registrada", position: "top" });
