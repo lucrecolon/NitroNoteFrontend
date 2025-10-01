@@ -13,9 +13,14 @@ export default function LoginScreen({ navigation }) {
     const handleLogin = async ()  => {
         try{
             const user = await Api.login(email, password);
-            setUser(user);
+            const userData = {
+                id: user.id,
+                name: user.nombre || user.name || "Usuario",
+                email: user.email,
+            };
+            setUser(userData);
             Toast.show({type:"success", text1:'Inicio de session con exito',  position: 'top' })
-            navigation.replace("MainTabs");
+            navigation.replace("Home");
         }
         catch(e){
            Toast.show({type:"error", text1:'Usuario o contraseña invalidos',  position: 'top' })
