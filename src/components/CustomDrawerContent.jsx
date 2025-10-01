@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { AuthContext } from '../hooks/AuthContext';
 
@@ -16,15 +16,18 @@ export default function CustomDrawerContent(props) {
                 <Text style={styles.email}>{user?.email || 'email@ejemplo.com'}</Text>
             </View>
 
-            {/* Opciones */}
+            {/* Contenido */}
             <View style={styles.menu}>
+                {/* Configuración */}
                 <DrawerItem
                     label="Configuración"
                     icon={({ color, size }) => (
                         <Ionicons name="settings-outline" size={size} color={color} />
                     )}
-                    onPress={() => props.navigation.navigate('Configuración')}
+                    onPress={() => props.navigation.navigate("Configuracion")}
                 />
+
+                {/* Cerrar Sesion */}
                 <DrawerItem
                     label="Cerrar sesión"
                     labelStyle={{ color: 'red' }}
