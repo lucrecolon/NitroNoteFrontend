@@ -1,7 +1,9 @@
 import { Picker } from '@react-native-picker/picker';
 import { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { createMantenimiento, getAllvehiculos } from '../../service/service';
+import { createMantenimiento, getUserAllvehiculos } from '../../service/service';
+import {useContext} from "react";
+import {AuthContext} from "../../hooks/AuthContext";
 import {
   View,
   Text,
@@ -39,6 +41,7 @@ export default function CrearMantenimientoScreen() {
 
   ];
 
+  const {user} = useContext(AuthContext);
   const [nombre, setNombre] = useState('');
   const [fechaARealizar, setFechaARealizar] = useState(''); // "YYYY-MM-DD"
   const [kmARealizar, setKmARealizar] = useState('');
@@ -53,7 +56,7 @@ export default function CrearMantenimientoScreen() {
     (async () => {
       try {
         setVehiculosLoading(true);
-        const list = await getAllvehiculos();
+        const list = await getUserAllvehiculos(user.id);
         if (!mounted) return;
         setVehiculos(Array.isArray(list) ? list : []);
         if (!preVehicleId && list?.length) setVehiculoId(list[0].id);
