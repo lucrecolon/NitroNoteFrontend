@@ -14,6 +14,7 @@ export default function LoginScreen({ navigation }) {
         try{
             const user = await Api.login(email, password);
             const userData = {
+                id: user.id,
                 name: user.nombre || user.name || "Usuario",
                 email: user.email,
             };
