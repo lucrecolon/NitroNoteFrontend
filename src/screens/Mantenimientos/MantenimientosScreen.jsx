@@ -41,8 +41,8 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                    renderItem={({ item }) => {
                        const id = item.id ?? item.idMantenimiento;
                        const nombre = item?.nombre ?? item?.tipo ?? '-';
-                       const fechaHecho = item?.fechaDeRealizacion ?? item?.fechaRealizacion ?? '-';
-                       const fechaPara = item?.fechaARealizar ?? item?.fechaProgramada ?? '-';
+                       const fechaHecho = item?.fechaDeRealizacion && item.fechaDeRealizacion !== "" ? item.fechaDeRealizacion : "-";
+                       const fechaPara = item?.fechaARealizar && item.fechaARealizar !== "" ? item.fechaARealizar : "-";
                        const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
                        const patente = item?.vehiculoId;
 
@@ -83,7 +83,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
 
                                {/* Datos */}
                                <View >
-                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente}</Text>
+                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente ?? '_'}</Text>
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
                                        {done ? `Hecho el ${fechaHecho}` : `Realizar el ${fechaPara}`}
                                    </Text>
@@ -142,7 +142,7 @@ export default function MantenimientosScreen() {
     const fetchMantenimientos = async () => {
         try {
             setRefreshing(true);
-            const all = await Api.getAllMantenimientos();
+            const all = await Api.getMantenimientosUsuario();
             setPendientes((all ?? []).filter((m) => !m.finalizado));
             setHechos((all ?? []).filter((m) => m.finalizado));
         } catch (e) {
