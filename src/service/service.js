@@ -194,6 +194,17 @@ const getUser = async () =>{
     }
 }
 
+const updateUser = async (payload) => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.put(`${api_endpoints.user}`, payload, config);
+        return data;
+    } catch (err) {
+        return Promise.reject(err.response || err);
+    }
+};
+
+
 const Api = {
     register,
     login,
@@ -209,7 +220,8 @@ const Api = {
     finalizarMantenimiento,
     deleteMantenimiento,
     deleteVehicleByPatent,
-    updateVehiculo
+    updateVehiculo,
+    updateUser
 }
 
 export default Api;
