@@ -34,7 +34,7 @@ export default function CustomDrawerContent(props) {
                     icon={({ size }) => (
                         <Ionicons name="log-out-outline" size={size} color="red" />
                     )}
-                    onPress={logout}
+                    onPress={() => props.navigation.navigate("Login")}
                 />
             </View>
         </DrawerContentScrollView>

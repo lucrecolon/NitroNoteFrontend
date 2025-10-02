@@ -147,7 +147,10 @@ export default function PerfilScreen({ navigation }) {
       </View>
 
       {/* Logout */}
-      <TouchableOpacity style={[styles.logoutBtn, { borderColor: divider }]} onPress={onLogout}>
+      <TouchableOpacity
+          style={[styles.logoutBtn, { borderColor: divider }]}
+          onPress={() => navigation.replace('Login')}
+      >
         <Ionicons name="log-out-outline" size={18} color="#ef4444" />
         <Text style={styles.logoutText}>Cerrar sesión</Text>
       </TouchableOpacity>

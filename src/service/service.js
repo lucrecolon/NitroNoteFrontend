@@ -17,6 +17,7 @@ const api_endpoints = {
     mantenimiento: `${api_base_url}/mantenimiento`,
     register: `${api_base_url}/register`,
     login: `${api_base_url}/login`,
+    logout: `${api_base_url}/logout`,
     user: `${api_base_url}/user`,
 }
 
@@ -129,6 +130,18 @@ export const updateVehiculo = async (payload) => {
     }
 };
 
+export const logout = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.post(`${api_endpoints.logout}`, {}, config);
+        return data;
+    } catch (e) {
+        console.error("[logout] error", e);
+        throw e;
+    }
+};
+
+
 const register = async (name, email, pass) => {
     const body = {
         nombre: name,
@@ -159,6 +172,7 @@ const login = async (email, pass) =>{
     }
 }
 
+
 const getUserAllvehiculos = async (id) => {
     try{
         const config = await getConfig();
@@ -185,6 +199,7 @@ const getUser = async () =>{
 const Api = {
     register,
     login,
+    logout,
     getUser,
     getUserAllvehiculos,
     getAllvehiculos,
