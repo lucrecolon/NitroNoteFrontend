@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl, Alert } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // 👈 importar iconos
+import { Ionicons } from '@expo/vector-icons';
 import Api from '../../service/service';
 
 const Tab = createMaterialTopTabNavigator();
@@ -10,14 +10,12 @@ const Tab = createMaterialTopTabNavigator();
 function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
     const navigation = useNavigation();
 
-    // 👉 Acción al finalizar mantenimiento
     const handleFinalizar = async (id) => {
         try {
-            await Api.finalizarMantenimiento(id); // PATCH al backend
-            await onRefresh(); // refresca listas
+            await Api.finalizarMantenimiento(id);
+            await onRefresh();
             Alert.alert('Éxito', 'Mantenimiento marcado como finalizado.');
         } catch (err) {
-            console.error('Error al finalizar mantenimiento', err);
             Alert.alert('Error', 'No se pudo finalizar el mantenimiento.');
         }
     };
@@ -43,8 +41,8 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                    renderItem={({ item }) => {
                        const id = item.id ?? item.idMantenimiento;
                        const nombre = item?.nombre ?? item?.tipo ?? '-';
-                       const fechaHecho = item?.fechaDeRealizacion ?? item?.fechaRealizacion ?? '-';
-                       const fechaPara = item?.fechaARealizar ?? item?.fechaProgramada ?? '-';
+                       const fechaHecho = item?.fechaDeRealizacion && item.fechaDeRealizacion !== "" ? item.fechaDeRealizacion : "-";
+                       const fechaPara = item?.fechaARealizar && item.fechaARealizar !== "" ? item.fechaARealizar : "-";
                        const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
                        const patente = item?.vehiculoId;
 
@@ -85,7 +83,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
 
                                {/* Datos */}
                                <View >
-                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente}</Text>
+                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente ?? '_'}</Text>
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
                                        {done ? `Hecho el ${fechaHecho}` : `Realizar el ${fechaPara}`}
                                    </Text>
@@ -144,7 +142,7 @@ export default function MantenimientosScreen() {
     const fetchMantenimientos = async () => {
         try {
             setRefreshing(true);
-            const all = await Api.getAllMantenimientos();
+            const all = await Api.getMantenimientosUsuario();
             setPendientes((all ?? []).filter((m) => !m.finalizado));
             setHechos((all ?? []).filter((m) => m.finalizado));
         } catch (e) {

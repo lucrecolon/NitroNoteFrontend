@@ -72,6 +72,15 @@ export default function CrearMantenimientoScreen() {
     };
   }, [preVehicleId]);
 
+  const isDisabled =
+      saving ||
+      vehiculosLoading ||
+      vehiculos.length === 0 ||
+      !vehiculoId ||
+      !nombre ||
+      (!fechaARealizar && !kmARealizar);
+
+
   const validar = () => {
     if (!nombre) {
       Alert.alert('Validación', 'Seleccioná el nombre del mantenimiento.');
@@ -219,7 +228,7 @@ export default function CrearMantenimientoScreen() {
                     title="Guardar"
                     onPress={onSave}
                     color="#007BFF"
-                    disabled={vehiculosLoading || vehiculos.length === 0}
+                    disabled={isDisabled}
                 />
               </View>
           )}

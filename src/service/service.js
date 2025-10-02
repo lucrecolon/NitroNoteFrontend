@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api_base_url = 'http://localhost:8080';
+const api_base_url = 'http://192.168.100.6:8080';
 
 const getConfig = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -61,6 +61,18 @@ export const getAllMantenimientos = async () => {
     const config = await getConfig();
     const { data } = await axios.get(`${api_endpoints.mantenimiento}/all`, config);
     return data;
+};
+
+// Solo los mantenimientos del usuario logueado
+export const getMantenimientosUsuario = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.get(`${api_endpoints.mantenimiento}/mine`, config);
+        return data;
+    } catch (e) {
+        console.error('[getMantenimientosUsuario] error', e.response?.data || e.message);
+        return Promise.reject(e);
+    }
 };
 
 // GET /mantenimiento/{id}
@@ -172,8 +184,7 @@ const login = async (email, pass) =>{
     }
 }
 
-
-const getUserAllvehiculos = async (id) => {
+export const getUserAllvehiculos = async (id) => {
     try{
         const config = await getConfig();
         const {data} = await axios.get(`${api_endpoints.vehiculo}/${id}`, config);
@@ -205,6 +216,7 @@ const Api = {
     getAllvehiculos,
     createVehiculo,
     getAllMantenimientos,
+    getMantenimientosUsuario,
     getMantenimientoById,
     createMantenimiento,
     updateMantenimiento,

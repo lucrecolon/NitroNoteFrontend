@@ -8,7 +8,8 @@ export default function DrawerNavigator() {
     return (
         <Drawer.Navigator
             screenOptions={{
-                headerShown: false, // 👈 ocultamos el header del Drawer
+                headerShown: false,
+                drawerStyle: { width: 280 },
             }}
             drawerContent={(props) => <CustomDrawerContent {...props} />}
         >

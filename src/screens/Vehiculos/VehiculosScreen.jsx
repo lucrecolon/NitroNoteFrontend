@@ -101,11 +101,10 @@ const handleEditVehiculo = (vehiculo) => {
         }}
       />
 
-      {vehiculos && (
-        <TouchableOpacity style={styles.button} onPress={handleCreateVehiculo}>
-          <Text style={{ color: '#fff', fontSize: 28, lineHeight: 28 }}>＋</Text>
-        </TouchableOpacity>
-      )}
+
+      <TouchableOpacity style={styles.button} onPress={handleCreateVehiculo}>
+        <Text style={{ color: '#fff', fontSize: 28, lineHeight: 28 }}>＋</Text>
+      </TouchableOpacity>
     </View>
   );
 }
