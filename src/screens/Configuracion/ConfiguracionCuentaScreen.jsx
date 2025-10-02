@@ -5,18 +5,23 @@ import { Ionicons } from "@expo/vector-icons";
 import Api from "../../service/service";
 import { AuthContext } from "../../hooks/AuthContext";
 
-export default function ConfiguracionCuentaScreen() {
+export default function ConfiguracionCuentaScreen({navigation}) {
     const { user, setUser } = useContext(AuthContext);
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [showPassword, setShowPassword] = useState(false); // 👈 estado para mostrar/ocultar
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [originalName, setOriginalName] = useState("");
+    const [originalEmail, setOriginalEmail] = useState("");
 
     useEffect(() => {
         if (user) {
-            setName(user.name || "");
+            setName(user.nombre || "");
             setEmail(user.email || "");
+            setOriginalName(user.nombre || "");
+            setOriginalEmail(user.email || "");
             setPassword("");
         }
     }, [user]);
@@ -28,23 +33,33 @@ export default function ConfiguracionCuentaScreen() {
         }
 
         try {
-            const updated = await Api.updateUser({ id: user.id, name, email, password });
+            const updated = await Api.updateUser({
+                id: user.id,
+                nombre: name,
+                email,
+                password,
+            });
             setUser(updated);
             Toast.show({ type: "success", text1: "Datos actualizados con éxito" });
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "ConfiguracionMain" }],
+            });
         } catch (err) {
             console.error(err);
             Toast.show({ type: "error", text1: "No se pudo actualizar el usuario" });
         }
     };
 
+    const hasChanges =
+        name !== originalName || email !== originalEmail || (password && password.trim().length > 0);
+
+
     return (
         <View style={{ flex: 1, padding: 20 }}>
             <Text>Nombre completo</Text>
-            <TextInput
-                style={styles.input}
-                value={name}
-                onChangeText={setName}
-            />
+            <TextInput style={styles.input} value={name} onChangeText={setName} />
 
             <Text>Email</Text>
             <TextInput
@@ -54,7 +69,7 @@ export default function ConfiguracionCuentaScreen() {
                 keyboardType="email-address"
             />
 
-            <Text>Contraseña</Text>
+            <Text>Nueva Contraseña</Text>
             <View style={styles.passwordContainer}>
                 <TextInput
                     key={showPassword ? "text" : "password"}
@@ -62,21 +77,17 @@ export default function ConfiguracionCuentaScreen() {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
-                    placeholder="••••••••"
                 />
-                <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    style={styles.eyeButton}
-                >
-                    <Ionicons
-                        name={showPassword ? "eye-off" : "eye"}
-                        size={22}
-                        color="#666"
-                    />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
+                    <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#666" />
                 </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleUpdate}>
+            <TouchableOpacity
+                style={[styles.button, { opacity: hasChanges ? 1 : 0.5 }]}
+                onPress={handleUpdate}
+                disabled={!hasChanges}
+            >
                 <Text style={{ color: "white", fontWeight: "600", textAlign: "center" }}>
                     Guardar cambios
                 </Text>
