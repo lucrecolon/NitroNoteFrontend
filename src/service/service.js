@@ -62,6 +62,18 @@ export const getAllMantenimientos = async () => {
     return data;
 };
 
+// Solo los mantenimientos del usuario logueado
+export const getMantenimientosUsuario = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.get(`${api_endpoints.mantenimiento}/mine`, config);
+        return data;
+    } catch (e) {
+        console.error('[getMantenimientosUsuario] error', e.response?.data || e.message);
+        return Promise.reject(e);
+    }
+};
+
 // GET /mantenimiento/{id}
 export const getMantenimientoById = async (id) => {
     try {
@@ -159,7 +171,7 @@ const login = async (email, pass) =>{
     }
 }
 
-const getUserAllvehiculos = async (id) => {
+export const getUserAllvehiculos = async (id) => {
     try{
         const config = await getConfig();
         const {data} = await axios.get(`${api_endpoints.vehiculo}/${id}`, config);
@@ -190,6 +202,7 @@ const Api = {
     getAllvehiculos,
     createVehiculo,
     getAllMantenimientos,
+    getMantenimientosUsuario,
     getMantenimientoById,
     createMantenimiento,
     updateMantenimiento,
