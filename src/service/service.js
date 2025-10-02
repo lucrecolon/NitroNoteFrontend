@@ -21,6 +21,7 @@ const api_endpoints = {
     user: `${api_base_url}/user`,
 }
 
+
 //Vehiculo
 export const getAllvehiculos = async () => {
 
