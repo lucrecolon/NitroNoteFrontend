@@ -17,8 +17,10 @@ const api_endpoints = {
     mantenimiento: `${api_base_url}/mantenimiento`,
     register: `${api_base_url}/register`,
     login: `${api_base_url}/login`,
+    logout: `${api_base_url}/logout`,
     user: `${api_base_url}/user`,
 }
+
 
 //Vehiculo
 export const getAllvehiculos = async () => {
@@ -90,7 +92,7 @@ export const createMantenimiento = async (payload) => {
     try {
         const config = await getConfig();
         const { data } = await axios.post(`${api_endpoints.mantenimiento}/${payload.vehiculoId}`, payload, config);
-        return data; // puede ser el id generado o el objeto creado, según tu back
+        return data;
     } catch (err) {
         console.error('[createMantenimiento] error', err.response?.data || err.message);
         throw err;
@@ -171,6 +173,17 @@ const login = async (email, pass) =>{
     }
 }
 
+export const logout = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.post(`${api_endpoints.logout}`, {}, config);
+        await AsyncStorage.removeItem("token");
+        return data;
+    } catch (e) {
+        console.error("No se pudo cerrar sesión", e.response);
+    }
+};
+
 export const getUserAllvehiculos = async (id) => {
     try{
         const config = await getConfig();
@@ -208,6 +221,7 @@ const updateUser = async (payload) => {
 const Api = {
     register,
     login,
+    logout,
     getUser,
     getUserAllvehiculos,
     getAllvehiculos,
