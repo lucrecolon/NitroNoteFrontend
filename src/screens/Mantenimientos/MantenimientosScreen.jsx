@@ -55,59 +55,74 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                    backgroundColor: done ? '#ECFDF5' : '#fff',
                                    borderRadius: 12,
                                    marginBottom: 10,
+                                   flexDirection: 'row', // dividimos en 2 columnas
                                }}
                            >
-                               {/* Header: Nombre + botón circular */}
-                               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                               {/* Columna izquierda: textos */}
+                               <View style={{ flex: 1 }}>
                                    <Text style={{ fontWeight: '600', color: done ? '#065F46' : '#111827' }}>
                                        {nombre}
                                    </Text>
-
-                                   {/* Botón circular */}
-                                   <TouchableOpacity
-                                       onPress={() => !done && handleFinalizar(id)}
-                                       style={{
-                                           width: 28,
-                                           height: 28,
-                                           borderRadius: 14,
-                                           borderWidth: 2,
-                                           borderColor: done ? '#047857' : '#9CA3AF',
-                                           backgroundColor: done ? '#047857' : 'transparent',
-                                           alignItems: 'center',
-                                           justifyContent: 'center',
-                                       }}
-                                   >
-                                       {done && <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>✓</Text>}
-                                   </TouchableOpacity>
-                               </View>
-
-                               {/* Datos */}
-                               <View >
-                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>{patente ?? '_'}</Text>
+                                   <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
+                                       {patente ?? '_'}
+                                   </Text>
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
                                        {done ? `Hecho el ${fechaHecho}` : `Realizar el ${fechaPara}`}
                                    </Text>
                                    <Text style={{ opacity: 0.7, color: done ? '#047857' : '#374151' }}>
                                        {done ? `Hecho a los ${km} KM` : `Realizar a los ${km} KM`}
                                    </Text>
+                               </View>
 
-                                   {/* Botón Editar debajo, alineado a la derecha */}
-                                   <TouchableOpacity
-                                       onPress={() => handleEditMaintenance(item)}
-                                       style={{
-                                           marginTop: 8,
-                                           paddingVertical: 6,
-                                           paddingHorizontal: 12,
-                                           borderRadius: 8,
-                                           alignSelf: 'flex-end',
-                                       }}
-                                   >
-                                       <Ionicons name="pencil" size={22} color="#2563EB" />
-                                   </TouchableOpacity>
+                               {/* Columna derecha: acciones */}
+                               <View
+                                   style={{
+                                       justifyContent: 'space-between',
+                                       alignItems: 'center',
+                                       marginRight: 8, // <-- mueve todo un poquito a la izquierda
+                                   }}
+                               >
+                                   {/* Botón circular */}
+                                   <View style={{ flex: 1, justifyContent: 'center' }}>
+                                       <TouchableOpacity
+                                           onPress={() => !done && handleFinalizar(id)}
+                                           style={{
+                                               width: 28,
+                                               height: 28,
+                                               borderRadius: 14,
+                                               borderWidth: 2,
+                                               borderColor: done ? '#047857' : '#9CA3AF',
+                                               backgroundColor: done ? '#047857' : 'transparent',
+                                               alignItems: 'center',
+                                               justifyContent: 'center',
+                                           }}
+                                       >
+                                           {done && (
+                                               <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>✓</Text>
+                                           )}
+                                       </TouchableOpacity>
+                                   </View>
+
+                                   {/* Botón lápiz */}
+                                   <View style={{ flex: 1, justifyContent: 'center' }}>
+                                       <TouchableOpacity
+                                           onPress={() => handleEditMaintenance(item)}
+                                           style={{
+                                               width: 28,
+                                               height: 28,
+                                               borderRadius: 14,
+                                               alignItems: 'center',
+                                               justifyContent: 'center',
+                                           }}
+                                       >
+                                           <Ionicons name="pencil" size={18} color="#2563EB" />
+                                       </TouchableOpacity>
+                                   </View>
                                </View>
                            </View>
                        );
-                }}
+
+                   }}
             />
 
             {!done && (
