@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api_base_url = 'http://192.168.100.6:8080';
+const api_base_url = 'http://192.168.1.92:8080';
 
 const getConfig = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -207,6 +207,17 @@ const getUser = async () =>{
     }
 }
 
+const updateUser = async (payload) => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.put(`${api_endpoints.user}`, payload, config);
+        return data;
+    } catch (err) {
+        return Promise.reject(err.response || err);
+    }
+};
+
+
 const Api = {
     register,
     login,
@@ -223,7 +234,8 @@ const Api = {
     finalizarMantenimiento,
     deleteMantenimiento,
     deleteVehicleByPatent,
-    updateVehiculo
+    updateVehiculo,
+    updateUser
 }
 
 export default Api;

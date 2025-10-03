@@ -24,9 +24,10 @@ export default function CustomDrawerContent(props) {
             {/* Perfil */}
             <View style={styles.profile}>
                 <Ionicons name="person-circle-outline" size={60} color="#4A90E2" />
-                <Text style={styles.name}>{user?.name || 'Usuario'}</Text>
+                <Text style={styles.name}>{user?.nombre ?? 'Usuario'}</Text>
                 <Text style={styles.email}>{user?.email || 'email@ejemplo.com'}</Text>
             </View>
+
 
             {/* Contenido */}
             <View style={styles.menu}>
