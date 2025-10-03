@@ -92,7 +92,7 @@ export const createMantenimiento = async (payload) => {
     try {
         const config = await getConfig();
         const { data } = await axios.post(`${api_endpoints.mantenimiento}/${payload.vehiculoId}`, payload, config);
-        return data; // puede ser el id generado o el objeto creado, según tu back
+        return data;
     } catch (err) {
         console.error('[createMantenimiento] error', err.response?.data || err.message);
         throw err;
@@ -143,18 +143,6 @@ export const updateVehiculo = async (payload) => {
     }
 };
 
-export const logout = async () => {
-    try {
-        const config = await getConfig();
-        const { data } = await axios.post(`${api_endpoints.logout}`, {}, config);
-        return data;
-    } catch (e) {
-        console.error("[logout] error", e);
-        throw e;
-    }
-};
-
-
 const register = async (name, email, pass) => {
     const body = {
         nombre: name,
@@ -184,6 +172,17 @@ const login = async (email, pass) =>{
         return Promise.reject(e);
     }
 }
+
+export const logout = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.post(`${api_endpoints.logout}`, {}, config);
+        await AsyncStorage.removeItem("token");
+        return data;
+    } catch (e) {
+        console.error("No se pudo cerrar sesión", e.response);
+    }
+};
 
 export const getUserAllvehiculos = async (id) => {
     try{

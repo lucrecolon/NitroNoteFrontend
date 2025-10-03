@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
                 const token = await AsyncStorage.getItem('token');
                 if (token) {
                     const res = await Api.getUser();
-                    setUser(res.data); // ⚠️ Ajustá según lo que devuelva tu backend
+                    setUser(res.data);
                 }
             } catch (e) {
                 console.log('No se pudo cargar usuario desde token', e);
@@ -27,19 +27,8 @@ export const AuthProvider = ({ children }) => {
         setUser(u);
     };
 
-    const logout = async () => {
-        try {
-            await Api.logout();
-        } catch (err) {
-            console.error("Error al cerrar sesión:", err);
-        } finally {
-            await AsyncStorage.removeItem("token");
-            setUser(null);
-        }
-    };
-
     return (
-        <AuthContext.Provider value={{ user, setUser, login, logout }}>
+        <AuthContext.Provider value={{ user, setUser, login}}>
             {children}
         </AuthContext.Provider>
     );
