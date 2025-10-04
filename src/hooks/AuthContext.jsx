@@ -26,11 +26,11 @@ export const AuthProvider = ({children}) => {
     // Guardar y setear usuario
     const saveUser = async (newUser) => {
         try {
+            if (!newUser) return;
             const normalizedUser = {
                 ...newUser,
                 nombre: newUser.nombre ?? newUser.name,
             };
-
             setUser(normalizedUser);
             await AsyncStorage.setItem("user", JSON.stringify(normalizedUser));
         } catch (e) {
@@ -38,8 +38,19 @@ export const AuthProvider = ({children}) => {
         }
     };
 
+    //  Logout
+    const logout = async () => {
+        try {
+            setUser(null);
+            await AsyncStorage.removeItem("user");
+            console.log("Usuario deslogueado y storage limpiado");
+        } catch (e) {
+            console.error("Error en logout", e);
+        }
+    };
+
     return (
-        <AuthContext.Provider value={{user, setUser: saveUser}}>
+        <AuthContext.Provider value={{user, setUser: saveUser, logout}}>
             {children}
         </AuthContext.Provider>
     );
