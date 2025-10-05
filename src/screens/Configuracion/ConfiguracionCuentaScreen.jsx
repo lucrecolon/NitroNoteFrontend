@@ -31,30 +31,47 @@ export default function ConfiguracionCuentaScreen({navigation}) {
             Toast.show({ type: "error", text1: "Nombre y email no pueden estar vacíos" });
             return;
         }
-
+        if (password && password.trim().length > 0 && password.length < 8) {
+            Toast.show({
+                type: "error",
+                text1: "La contraseña debe tener más de 8 caracteres"
+            });
+            return;
+        }
         try {
-            const updated = await Api.updateUser({
-                id: user.id,
+            const payload = {
                 nombre: name,
-                email,
-                password,
-            });
-            setUser(updated);
-            Toast.show({ type: "success", text1: "Datos actualizados con éxito" });
+                email: email,
+            };
+            if (password && password.trim().length >= 8) {
+                payload.password = password;
+            }
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "ConfiguracionMain" }],
-            });
+            const updated = await Api.updateUser(payload);
+            const updatedUser = {
+                ...user,
+                ...updated
+            };
+
+            setUser(updatedUser);
+            Toast.show({ type: "success", text1: "Los cambios se realizaron con éxito" });
+            navigation.goBack();
+
         } catch (err) {
             console.error(err);
-            Toast.show({ type: "error", text1: "No se pudo actualizar el usuario" });
+            if (err.message === "La contraseña debe tener más de 8 caracteres") {
+                Toast.show({
+                    type: "error",
+                    text1: "La contraseña debe tener más de 8 caracteres"
+                });
+            } else {
+                Toast.show({ type: "error", text1: "No se pudo actualizar el usuario" });
+            }
         }
     };
 
     const hasChanges =
         name !== originalName || email !== originalEmail || (password && password.trim().length > 0);
-
 
     return (
         <View style={{ flex: 1, padding: 20 }}>
@@ -77,6 +94,7 @@ export default function ConfiguracionCuentaScreen({navigation}) {
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
+                    placeholder="Mínimo 8 caracteres"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                     <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#666" />
@@ -84,9 +102,12 @@ export default function ConfiguracionCuentaScreen({navigation}) {
             </View>
 
             <TouchableOpacity
-                style={[styles.button, { opacity: hasChanges ? 1 : 0.5 }]}
+                style={[styles.button, {
+                    opacity: hasChanges ? 1 : 0.5,
+                    backgroundColor: (password && password.length > 0 && password.length < 8) ? '#ccc' : '#007AFF'
+                }]}
                 onPress={handleUpdate}
-                disabled={!hasChanges}
+                disabled={!hasChanges || (password && password.length > 0 && password.length < 8)}
             >
                 <Text style={{ color: "white", fontWeight: "600", textAlign: "center" }}>
                     Guardar cambios
@@ -122,5 +143,11 @@ const styles = {
     },
     eyeButton: {
         paddingHorizontal: 10,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 5,
+        marginBottom: 10,
     },
 };
