@@ -26,35 +26,74 @@ export default function ConfiguracionCuentaScreen({navigation}) {
         }
     }, [user]);
 
+    // validar formato de mail, capaz se puede hacer mejor(?
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@(gmail|hotmail)\.com$/;
+        return emailRegex.test(email);
+    };
+
     const handleUpdate = async () => {
         if (!name.trim() || !email.trim()) {
             Toast.show({ type: "error", text1: "Nombre y email no pueden estar vacíos" });
             return;
         }
 
-        try {
-            const updated = await Api.updateUser({
-                id: user.id,
-                nombre: name,
-                email,
-                password,
+        if (!isValidEmail(email)) {
+            Toast.show({
+                type: "error",
+                text1: "El email debe ser @gmail.com o @hotmail.com"
             });
-            setUser(updated);
-            Toast.show({ type: "success", text1: "Datos actualizados con éxito" });
+            return;
+        }
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "ConfiguracionMain" }],
+        if (password && password.trim().length > 0 && password.length < 8) {
+            Toast.show({
+                type: "error",
+                text1: "La contraseña debe tener más de 8 caracteres"
             });
+            return;
+        }
+        try {
+            const payload = {
+                nombre: name,
+                email: email,
+            };
+            if (password && password.trim().length >= 8) {
+                payload.password = password;
+            }
+            const updated = await Api.updateUser(payload);
+            const updatedUser = {
+                ...user,
+                ...updated
+            };
+
+            setUser(updatedUser);
+            Toast.show({ type: "success", text1: "Los cambios se realizaron con éxito" });
+
+            navigation.goBack();
         } catch (err) {
-            console.error(err);
-            Toast.show({ type: "error", text1: "No se pudo actualizar el usuario" });
+            // console.error(err);
+            if (err.message === "La contraseña debe tener más de 8 caracteres") {
+                Toast.show({
+                    type: "error",
+                    text1: "La contraseña debe tener más de 8 caracteres"
+                });
+            }
+            else if (err.message === "El email ya se encuentra registrado") {
+                Toast.show({
+                    type: "error",
+                    text1: "El email ya se encuentra registrado"
+                });
+            }
+            else {
+                Toast.show({ type: "error", text1: "No se pudo actualizar el usuario" });
+            }
         }
     };
 
-    const hasChanges =
-        name !== originalName || email !== originalEmail || (password && password.trim().length > 0);
-
+    const hasChanges = Boolean(
+        name !== originalName || email !== originalEmail || (password && password.trim().length > 0)
+    );
 
     return (
         <View style={{ flex: 1, padding: 20 }}>
@@ -72,17 +111,16 @@ export default function ConfiguracionCuentaScreen({navigation}) {
             <Text>Nueva Contraseña</Text>
             <View style={styles.passwordContainer}>
                 <TextInput
-                    key={showPassword ? "text" : "password"}
                     style={[styles.input, { flex: 1, marginBottom: 0 }]}
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
+                    placeholder="Mínimo 8 caracteres"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                     <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#666" />
                 </TouchableOpacity>
             </View>
-
             <TouchableOpacity
                 style={[styles.button, { opacity: hasChanges ? 1 : 0.5 }]}
                 onPress={handleUpdate}
@@ -122,5 +160,11 @@ const styles = {
     },
     eyeButton: {
         paddingHorizontal: 10,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginTop: 5,
+        marginBottom: 10,
     },
 };

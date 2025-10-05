@@ -213,6 +213,12 @@ const updateUser = async (payload) => {
         const { data } = await axios.put(`${api_endpoints.user}`, payload, config);
         return data;
     } catch (err) {
+        if (err.response?.status === 400 && err.response?.data === "La contraseña debe tener más de 8 caracteres") {
+            throw new Error("La contraseña debe tener más de 8 caracteres");
+        }
+        if (err.response?.status === 409 && err.response?.data === "El email ya se encuentra registrado") {
+            throw new Error("El email ya se encuentra registrado");
+        }
         return Promise.reject(err.response || err);
     }
 };
