@@ -23,12 +23,20 @@ export const AuthProvider = ({children}) => {
         })();
     }, []);
 
-    // Guardar y setear usuario
+    // Guardar y setear usuario - CORREGIDO
     const saveUser = async (newUser) => {
         try {
+            // Si newUser es null, limpiar el estado y storage
+            if (newUser === null) {
+                setUser(null);
+                await AsyncStorage.removeItem("user");
+                return;
+            }
+
+            // Si newUser es un objeto válido, normalizar y guardar
             const normalizedUser = {
                 ...newUser,
-                nombre: newUser.nombre ?? newUser.name,
+                nombre: newUser.nombre ?? newUser.name ?? '', // Manejar casos undefined/null
             };
 
             setUser(normalizedUser);
