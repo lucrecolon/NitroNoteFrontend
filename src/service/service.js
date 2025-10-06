@@ -17,8 +17,10 @@ const api_endpoints = {
     mantenimiento: `${api_base_url}/mantenimiento`,
     register: `${api_base_url}/register`,
     login: `${api_base_url}/login`,
+    logout: `${api_base_url}/logout`,
     user: `${api_base_url}/user`,
 }
+
 
 //Vehiculo
 export const getAllvehiculos = async () => {
@@ -62,6 +64,18 @@ export const getAllMantenimientos = async () => {
     return data;
 };
 
+// Solo los mantenimientos del usuario logueado
+export const getMantenimientosUsuario = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.get(`${api_endpoints.mantenimiento}/mine`, config);
+        return data;
+    } catch (e) {
+        console.error('[getMantenimientosUsuario] error', e.response?.data || e.message);
+        return Promise.reject(e);
+    }
+};
+
 // GET /mantenimiento/{id}
 export const getMantenimientoById = async (id) => {
     try {
@@ -78,7 +92,7 @@ export const createMantenimiento = async (payload) => {
     try {
         const config = await getConfig();
         const { data } = await axios.post(`${api_endpoints.mantenimiento}/${payload.vehiculoId}`, payload, config);
-        return data; // puede ser el id generado o el objeto creado, según tu back
+        return data;
     } catch (err) {
         console.error('[createMantenimiento] error', err.response?.data || err.message);
         throw err;
@@ -159,7 +173,18 @@ const login = async (email, pass) =>{
     }
 }
 
-const getUserAllvehiculos = async (id) => {
+export const logout = async () => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.post(`${api_endpoints.logout}`, {}, config);
+        await AsyncStorage.removeItem("token");
+        return data;
+    } catch (e) {
+        console.error("No se pudo cerrar sesión", e.response);
+    }
+};
+
+export const getUserAllvehiculos = async (id) => {
     try{
         const config = await getConfig();
         const {data} = await axios.get(`${api_endpoints.vehiculo}/${id}`, config);
@@ -182,21 +207,41 @@ const getUser = async () =>{
     }
 }
 
+const updateUser = async (payload) => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.put(`${api_endpoints.user}`, payload, config);
+        return data;
+    } catch (err) {
+        if (err.response?.status === 400 && err.response?.data === "La contraseña debe tener más de 8 caracteres") {
+            throw new Error("La contraseña debe tener más de 8 caracteres");
+        }
+        if (err.response?.status === 409 && err.response?.data === "El email ya se encuentra registrado") {
+            throw new Error("El email ya se encuentra registrado");
+        }
+        return Promise.reject(err.response || err);
+    }
+};
+
+
 const Api = {
     register,
     login,
+    logout,
     getUser,
     getUserAllvehiculos,
     getAllvehiculos,
     createVehiculo,
     getAllMantenimientos,
+    getMantenimientosUsuario,
     getMantenimientoById,
     createMantenimiento,
     updateMantenimiento,
     finalizarMantenimiento,
     deleteMantenimiento,
     deleteVehicleByPatent,
-    updateVehiculo
+    updateVehiculo,
+    updateUser
 }
 
 export default Api;
