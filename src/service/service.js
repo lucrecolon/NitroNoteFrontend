@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api_base_url = 'http://192.168.100.6:8080';
+const api_base_url = 'http://192.168.1.92:8080';
 
 const getConfig = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -195,12 +195,10 @@ export const getUserAllvehiculos = async (id) => {
     }
 }
 
-const getUser = async () =>{
+export const getUser = async () =>{
     try{
         const config = await getConfig();
-        const response = await axios.get(`${api_endpoints.user}`, config);
-        console.log(response)
-        return response
+        return await axios.get(`${api_endpoints.user}`, config)
     }
     catch(e){
         return Promise.reject(e)
@@ -224,6 +222,21 @@ const updateUser = async (payload) => {
 };
 
 
+
+export const updateNotificationEmailPreferences = async (prefs) => {
+    try {
+        const config = await getConfig();
+        const { data } = await axios.patch(`${api_endpoints.user}/notification-preferences`,
+            prefs, // { emailEnabled: true/false }
+            config
+        );
+        return data;
+    } catch (err) {
+        return Promise.reject(err.response || err);
+    }
+};
+
+
 const Api = {
     register,
     login,
@@ -241,7 +254,8 @@ const Api = {
     deleteMantenimiento,
     deleteVehicleByPatent,
     updateVehiculo,
-    updateUser
+    updateUser,
+    updateNotificationEmailPreferences
 }
 
 export default Api;
