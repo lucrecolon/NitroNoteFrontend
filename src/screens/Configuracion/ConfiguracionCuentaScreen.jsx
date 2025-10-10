@@ -122,11 +122,21 @@ export default function ConfiguracionCuentaScreen({navigation}) {
                 </TouchableOpacity>
             </View>
             <TouchableOpacity
-                style={[styles.button, { opacity: hasChanges ? 1 : 0.5 }]}
+                style={[
+                    styles.button,
+                    { backgroundColor: hasChanges ? '#007BFF' : '#9CA3AF' },
+                ]}
                 onPress={handleUpdate}
                 disabled={!hasChanges}
             >
-                <Text style={{ color: "white", fontWeight: "600", textAlign: "center" }}>
+                <Text
+                    style={{
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        textAlign: 'center',
+                    }}
+                >
                     Guardar cambios
                 </Text>
             </TouchableOpacity>
@@ -144,10 +154,11 @@ const styles = {
         backgroundColor: "#f9fafb",
     },
     button: {
-        backgroundColor: "#2563eb",
-        padding: 15,
-        borderRadius: 10,
-        marginTop: 20,
+        marginTop: 12,
+        backgroundColor: '#007BFF',
+        paddingVertical: 10,
+        borderRadius: 8,
+        alignItems: 'center',
     },
     passwordContainer: {
         flexDirection: "row",

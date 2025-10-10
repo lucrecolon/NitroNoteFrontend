@@ -106,11 +106,12 @@ export default function EditarMantenimientoScreen() {
 
         {/* Botones */}
         <View style={styles.buttonRow}>
-          <Button title="Cancelar" onPress={handleCancel} color="#888" />
+          <Button title="Cancelar" onPress={handleCancel} color="#FF684A" />
           <Button
             title={saving ? 'Guardando...' : 'Guardar cambios'}
             onPress={handleSave}
             disabled={saving}
+            color= '#007BFF'
           />
         </View>
       </ScrollView>

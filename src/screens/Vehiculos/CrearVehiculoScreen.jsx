@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import Api from '../../service/service';
-import { View, Text, TextInput, ActivityIndicator, ScrollView, Button } from 'react-native';
+import {View, Text, TextInput, ActivityIndicator, ScrollView, Button, TouchableOpacity} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
@@ -134,16 +134,34 @@ export default function DetalleVehiculoScreen() {
         style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
       />
 
-      {/* Botón guardar */}
-      {loading ? (
-        <View style={{ marginTop: 12 }}>
-          <ActivityIndicator />
-        </View>
-      ) : (
-        <View style={{ marginTop: 12 }}>
-          <Button title="Guardar" onPress={fetchCreateVehiculo} />
-        </View>
-      )}
+        {/* Botón guardar */}
+        {loading ? (
+            <View style={{ marginTop: 12 }}>
+                <ActivityIndicator />
+            </View>
+        ) : (
+            <TouchableOpacity
+                onPress={fetchCreateVehiculo}
+                style={{
+                    marginTop: 12,
+                    backgroundColor: '#007BFF',
+                    paddingVertical: 10,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        fontSize: 16,
+                        textAlign: 'center',
+                    }}
+                >
+                    Guardar
+                </Text>
+            </TouchableOpacity>
+        )}
     </ScrollView>
   );
 }

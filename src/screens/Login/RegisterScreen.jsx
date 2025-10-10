@@ -76,7 +76,7 @@ export default function LoginScreen({ navigation }) {
                     style={styles.input}
                   />
                   <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                    <Text style={{ color: "white", fontWeight: "600", textAlign: "center" }}>
+                    <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 , textAlign: "center" }}>
                       Crear Cuenta
                     </Text>
                   </TouchableOpacity>
@@ -95,7 +95,7 @@ const styles = {
     backgroundColor: "#f9fafb",
   },
   button: {
-    backgroundColor: "#2563eb",
+    backgroundColor: '#007BFF',
     padding: 15,
     width:335,
     left: 20,

@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
-  ScrollView,
+  ScrollView, TouchableOpacity,
 } from 'react-native';
 
 export default function CrearMantenimientoScreen() {
@@ -223,14 +223,21 @@ export default function CrearMantenimientoScreen() {
                 <ActivityIndicator />
               </View>
           ) : (
-              <View style={{ marginTop: 12 }}>
-                <Button
-                    title="Guardar"
-                    onPress={onSave}
-                    color="#007BFF"
-                    disabled={isDisabled}
-                />
-              </View>
+              <TouchableOpacity
+                  onPress={onSave}
+                  disabled={isDisabled}
+                  style={{
+                    marginTop: 12,
+                    backgroundColor: isDisabled ? '#9CA3AF' : '#007BFF',
+                    paddingVertical: 10,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                  }}
+              >
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 , textAlign: "center" }}>
+                  Guardar
+                </Text>
+              </TouchableOpacity>
           )}
         </ScrollView>
       </KeyboardAvoidingView>
