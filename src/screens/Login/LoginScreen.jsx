@@ -52,7 +52,7 @@ export default function LoginScreen({ navigation }) {
             </View>
 
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={{ color: "white", fontWeight: "600", textAlign: "center" }}>
+                <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 , textAlign: "center" }}>
                     Iniciar Sesión
                 </Text>
             </TouchableOpacity>
@@ -88,7 +88,7 @@ const styles = {
         padding: 10,
     },
     button: {
-        backgroundColor: "#2563eb",
+        backgroundColor: '#007BFF',
         padding: 15,
         width: 335,
         left: 20,

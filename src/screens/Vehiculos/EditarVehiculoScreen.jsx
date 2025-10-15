@@ -142,6 +142,8 @@ export default function EditarVehiculoScreen() {
           title={saving ? 'Guardando...' : 'Guardar cambios'}
           onPress={handleSave}
           disabled={saving}
+          color= '#007BFF'
+
         />
       </View>
     </ScrollView>

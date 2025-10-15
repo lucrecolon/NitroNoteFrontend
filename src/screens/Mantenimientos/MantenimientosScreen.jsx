@@ -77,7 +77,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                {/* Columna derecha: acciones */}
                                <View
                                    style={{
-                                       justifyContent: 'space-between',
+                                       justifyContent: done ? 'center' : 'space-between',
                                        alignItems: 'center',
                                        marginRight: 8, // <-- mueve todo un poquito a la izquierda
                                    }}
@@ -104,20 +104,22 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                    </View>
 
                                    {/* Botón lápiz */}
-                                   <View style={{ flex: 1, justifyContent: 'center' }}>
-                                       <TouchableOpacity
-                                           onPress={() => handleEditMaintenance(item)}
-                                           style={{
-                                               width: 28,
-                                               height: 28,
-                                               borderRadius: 14,
-                                               alignItems: 'center',
-                                               justifyContent: 'center',
-                                           }}
-                                       >
-                                           <Ionicons name="pencil" size={18} color="#2563EB" />
-                                       </TouchableOpacity>
-                                   </View>
+                                   {!done && (
+                                       <View style={{ flex: 1, justifyContent: 'center' }}>
+                                           <TouchableOpacity
+                                               onPress={() => handleEditMaintenance(item)}
+                                               style={{
+                                                   width: 28,
+                                                   height: 28,
+                                                   borderRadius: 14,
+                                                   alignItems: 'center',
+                                                   justifyContent: 'center',
+                                               }}
+                                           >
+                                               <Ionicons name="pencil" size={18} color="#2563EB" />
+                                           </TouchableOpacity>
+                                       </View>
+                                   )}
                                </View>
                            </View>
                        );

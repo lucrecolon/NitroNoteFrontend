@@ -10,7 +10,7 @@ export default function ConfiguracionStack() {
     return (
         <Stack.Navigator
             screenOptions={{
-                headerShown: true,   // 👈 el header lo maneja el stack, no el drawer
+                headerShown: true,
             }}
         >
             <Stack.Screen
