@@ -1,20 +1,18 @@
-export default ({ config }) => ({
-    ...config,
-});
+import Constants from "expo-constants";
 
 const IS_DEV = process.env.APP_VARIANT === 'development';
 const IS_PREVIEW = process.env.APP_VARIANT === 'preview';
 
 const getUniqueIdentifier = () => {
     if (IS_DEV) {
-        return 'com.yourname.stickersmash.dev';
+        return 'com.lucrecolon.nitronote.dev';
     }
 
     if (IS_PREVIEW) {
-        return 'com.yourname.stickersmash.preview';
+        return 'com.lucrecolon.nitronote.preview';
     }
 
-    return 'com.yourname.stickersmash';
+    return 'com.lucrecolon.nitronote';
 };
 
 const getAppName = () => {
@@ -36,7 +34,25 @@ export default ({ config }) => ({
         ...config.ios,
         bundleIdentifier: getUniqueIdentifier(),
     },
+    android: {
+        ...config.android,
+        package: getUniqueIdentifier(),
+    },
     plugins: [
         "expo-font",
+        [
+            "expo-notifications",
+            {
+                icon: "./assets/NitroNoteIcon.png",
+                color: "#ffffff",
+            }
+        ],
+        "expo-updates"
     ],
+    extra: {
+        eas: {
+            projectId: "6666c354-4eee-4a68-a69f-3e1e4959e283"
+        },
+        API_URL: "https://nitronotebackend-production.up.railway.app/"
+    },
 });
