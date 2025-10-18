@@ -13,15 +13,19 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.stickersmash",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/NitroNoteIcon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.lucrecolon.NitroNote"
+      "package": "com.yourname.stickersmash"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,8 +33,15 @@
     "extra": {
       "eas": {
         "projectId": "6666c354-4eee-4a68-a69f-3e1e4959e283"
-      }
+      },
+      "API_URL": "https://nitronotebackend-production.up.railway.app/"
     },
-    "owner": "lucrecolon"
+    "owner": "lucrecolon",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/6666c354-4eee-4a68-a69f-3e1e4959e283"
+    }
   }
 }

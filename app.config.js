@@ -36,8 +36,7 @@ export default ({ config }) => ({
         ...config.ios,
         bundleIdentifier: getUniqueIdentifier(),
     },
-    android: {
-        ...config.android,
-        package: getUniqueIdentifier(),
-    },
+    plugins: [
+        "expo-font",
+    ],
 });
