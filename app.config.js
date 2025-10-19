@@ -53,6 +53,6 @@ export default ({ config }) => ({
         eas: {
             projectId: "6666c354-4eee-4a68-a69f-3e1e4959e283"
         },
-        API_URL: "https://nitronotebackend-production.up.railway.app/"
+        API_URL: "https://nitronotebackend-production.up.railway.app"
     },
 });
