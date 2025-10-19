@@ -4,21 +4,22 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import Api from '../../service/service';
+import ModalActualizarKilometros from '../Vehiculos/ModalActualizarKilometros';
 
 const Tab = createMaterialTopTabNavigator();
 
 function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
     const navigation = useNavigation();
+    const [patenteFinalizar, setPatenteFinalizar] = useState("");
+    const [modalVisible, setModalVisible] = useState(false);
+    const [matenimientoId, setIdMantenimiento] = useState(0);
 
-    const handleFinalizar = async (id) => {
-        try {
-            await Api.finalizarMantenimiento(id);
-            await onRefresh();
-            Alert.alert('Éxito', 'Mantenimiento marcado como finalizado.');
-        } catch (err) {
-            Alert.alert('Error', 'No se pudo finalizar el mantenimiento.');
-        }
-    };
+    const handleActualizarKilometros = (patente,id) => {
+        setModalVisible(true);
+        setPatenteFinalizar(patente);
+        setIdMantenimiento(id);
+    }
+    
 
     const handleEditMaintenance = (mantenimiento) => {
       navigation.navigate("EditarMantenimiento", {mantenimiento});
@@ -26,6 +27,12 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
 
     return (
         <View style={{ flex: 1 }}>
+            <ModalActualizarKilometros 
+                visible={modalVisible} 
+                patente={patenteFinalizar}  
+                idMantenimiento= {matenimientoId}
+                onClose={()=> setModalVisible(false)}
+                refresh={onRefresh}/>
             <FlatList
                 contentContainerStyle={{ padding: 16 }}
                 data={data}
@@ -85,7 +92,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                                    {/* Botón circular */}
                                    <View style={{ flex: 1, justifyContent: 'center' }}>
                                        <TouchableOpacity
-                                           onPress={() => !done && handleFinalizar(id)}
+                                           onPress={() => !done && handleActualizarKilometros(patente, id)}
                                            style={{
                                                width: 28,
                                                height: 28,

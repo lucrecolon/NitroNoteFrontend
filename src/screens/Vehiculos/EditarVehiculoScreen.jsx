@@ -47,6 +47,7 @@ export default function EditarVehiculoScreen() {
       setSaving(true);
 
       const actualizado = { ...vehiculo, kilometros: kmNuevo };
+      console.log("actualizado:", actualizado);
       await Api.updateVehiculo(actualizado);
 
       Alert.alert('Éxito', 'Los cambios se guardaron con éxito.', [

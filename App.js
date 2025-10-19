@@ -3,9 +3,14 @@ import StackNavigator from './src/navigation/StackNavigator';
 import Toast from 'react-native-toast-message';
 import { AuthProvider } from './src/hooks/AuthContext';
 import * as Updates from 'expo-updates';
+<<<<<<< Updated upstream
 import { setupNotificationListeners } from './src/utils/notifications';
 import React, { useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
+=======
+import {useEffect} from "react";
+import { StatusBar } from 'react-native';
+>>>>>>> Stashed changes
 
 export default function App() {
     const notificationListener = useRef();
@@ -45,6 +50,7 @@ export default function App() {
 
     return (
         <AuthProvider>
+            <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
             <NavigationContainer>
                 <StackNavigator />
                 <Toast/>

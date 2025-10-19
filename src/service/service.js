@@ -135,6 +135,7 @@ export const deleteVehicleByPatent = async (patente) => {
 // PUT /vehiculo/{id}  (editar campos)
 export const updateVehiculo = async (payload) => {
     try{
+        console.log("actualizado:" ,payload)
         const config = await getConfig();
         const { data } = await axios.put(`${api_endpoints.vehiculo}`, payload, config);
         return data;
@@ -236,6 +237,15 @@ export const updateNotificationEmailPreferences = async (prefs) => {
     }
 };
 
+const getVehiculoByPatente = async (patente) => {
+    try{
+        const config = await getConfig();
+        const {data} = await axios.get(`${api_endpoints.vehiculo}/by-patente/${patente}`, config);
+        return data;
+    }catch(e){
+        return Promise.reject(e);
+    }
+};
 
 const Api = {
     register,
@@ -254,6 +264,7 @@ const Api = {
     deleteMantenimiento,
     deleteVehicleByPatent,
     updateVehiculo,
+    getVehiculoByPatente,
     updateUser,
     updateNotificationEmailPreferences
 }
