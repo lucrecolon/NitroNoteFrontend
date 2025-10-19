@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api_base_url = 'http://192.168.1.92:8080';
+const api_base_url = 'https://nitronotebackend-production.up.railway.app';
 
 const getConfig = async () => {
     const token = await AsyncStorage.getItem('token');
@@ -227,7 +227,7 @@ export const updateNotificationEmailPreferences = async (prefs) => {
     try {
         const config = await getConfig();
         const { data } = await axios.patch(`${api_endpoints.user}/notification-preferences`,
-            prefs, // { emailEnabled: true/false }
+            prefs, // { emailEnabled: true/false, pushEnabled: true/false, pushToken: "token" }
             config
         );
         return data;

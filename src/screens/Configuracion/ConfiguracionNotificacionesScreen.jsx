@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, ActivityIndicator, StyleSheet } from "react-native";
-import Toast from "react-native-toast-message";
-import { Ionicons } from "@expo/vector-icons";
-import { getUser, updateNotificationEmailPreferences } from "../../service/service"; // ajustá la ruta según tu estructura
+import React, { useState, useEffect } from 'react';
+import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import {getUser} from "../../service/service";
 
 const PRIMARY = "#1E63FF";
 
 export default function ConfiguracionNotificacionesScreen({ navigation }) {
     const [enabledEmail, setEnabledEmail] = useState(false);
+    const [enabledPush, setEnabledPush] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -19,9 +20,16 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                 if (user && typeof user.emailNotificationsEnabled === "boolean") {
                     setEnabledEmail(user.emailNotificationsEnabled);
                 }
+                if (user && typeof user.pushNotificationsEnabled === "boolean") {
+                    setEnabledPush(user.pushNotificationsEnabled);
+                }
             } catch (e) {
-                console.error("Error al cargar usuario:", e);
-                Toast.show({ type: "error", text1: "Error", text2: "No se pudo cargar la configuración." });
+                console.error("Error al guardar:", e);
+                Toast.show({
+                    type: "error",
+                    text1: "Error",
+                    text2: "No se pudo cargar la configuración."
+                });
             } finally {
                 setLoading(false);
             }
@@ -33,12 +41,40 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
         if (saving) return;
         try {
             setSaving(true);
-            await updateNotificationEmailPreferences({ emailEnabled: enabledEmail });
-            Toast.show({ type: "success", text1: "Preferencias actualizadas" });
+
+            let pushToken = null;
+
+            // Si activa push notifications, obtener token
+            if (enabledPush) {
+                pushToken = await registerForPushNotificationsAsync();
+                if (!pushToken) {
+                    Toast.show({
+                        type: "error",
+                        text1: "Error",
+                        text2: "No se pudo obtener permiso para notificaciones"
+                    });
+                    return;
+                }
+            }
+
+            await updateNotificationEmailPreferences({
+                emailEnabled: enabledEmail,
+                pushEnabled: enabledPush,
+                pushToken: pushToken
+            });
+
+            Toast.show({
+                type: "success",
+                text1: "Preferencias actualizadas"
+            });
             navigation.goBack();
         } catch (e) {
             const msg = e?.data || "No se pudo guardar. Intenta nuevamente.";
-            Toast.show({ type: "error", text1: "Error", text2: String(msg) });
+            Toast.show({
+                type: "error",
+                text1: "Error",
+                text2: String(msg)
+            });
         } finally {
             setSaving(false);
         }
@@ -59,7 +95,7 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                 Elige cómo quieres recibir los recordatorios de mantenimiento de tu vehículo:
             </Text>
 
-            {/* Card */}
+            {/* Email */}
             <View style={styles.card}>
                 <Pressable
                     accessible
@@ -81,6 +117,28 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                 </Pressable>
             </View>
 
+            {/* Push */}
+            <View style={styles.card}>
+                <Pressable
+                    accessible
+                    accessibilityRole="checkbox"
+                    accessibilityState={{ checked: enabledPush }}
+                    accessibilityLabel="Por notificación push"
+                    onPress={() => setEnabledPush(v => !v)}
+                    style={styles.row}
+                >
+                    <View style={[styles.checkbox, enabledPush && styles.checkboxChecked]}>
+                        {enabledPush && <Ionicons name="checkmark" size={18} color="#fff" />}
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <Text style={styles.cardTitle}>Por notificación push</Text>
+                        <Text style={styles.cardDesc}>
+                            Recibe recordatorios mediante una alerta en tu celular, incluso si la app está cerrada.
+                        </Text>
+                    </View>
+                </Pressable>
+            </View>
+
             {/* Botón Guardar */}
             <Pressable
                 onPress={onSave}
@@ -88,7 +146,7 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                 style={({ pressed }) => [
                     styles.button,
                     pressed && { opacity: 0.9 },
-                    saving && { opacity: 0.6 },
+                    saving && { opacity: 0.6 }
                 ]}
             >
                 {saving ? (
