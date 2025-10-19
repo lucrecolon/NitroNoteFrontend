@@ -227,7 +227,7 @@ export const updateNotificationEmailPreferences = async (prefs) => {
     try {
         const config = await getConfig();
         const { data } = await axios.patch(`${api_endpoints.user}/notification-preferences`,
-            prefs, // { emailEnabled: true/false }
+            prefs, // { emailEnabled: true/false, pushEnabled: true/false, pushToken: "token" }
             config
         );
         return data;

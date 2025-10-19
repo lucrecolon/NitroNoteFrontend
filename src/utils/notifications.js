@@ -12,8 +12,28 @@ Notifications.setNotificationHandler({
     }),
 });
 
+// Configurar para redirección cuando se toca la notificación
+export function setupNotificationListeners(navigation) {
+    // Listener para cuando el usuario TOCA la notificación
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+        const data = response.notification.request.content.data;
+
+        console.log('Usuario tocó la notificación:', data);
+
+        // Redirigir basado en el tipo de notificación
+        if (data.type === 'maintenance_reminder' && data.maintenanceId) {
+            navigation.navigate('Mantenimientos', {
+                screen: 'MantenimientoDetails',
+                params: { maintenanceId: data.maintenanceId }
+            });
+        }
+    });
+
+    return responseListener;
+}
+
 export function handleRegistrationError(errorMessage) {
-    alert(errorMessage);
+    console.error(errorMessage);
     throw new Error(errorMessage);
 }
 
@@ -37,15 +57,15 @@ export async function registerForPushNotificationsAsync() {
         }
 
         if (finalStatus !== 'granted') {
-            handleRegistrationError('Permission not granted to get push token for push notification!');
-            return;
+            handleRegistrationError('Permiso denegado para notificaciones push!');
+            return null;
         }
 
         const projectId = Constants?.expoConfig?.extra?.eas?.projectId ?? Constants?.easConfig?.projectId;
 
         if (!projectId) {
             handleRegistrationError('Project ID not found');
-            return;
+            return null;
         }
 
         try {
@@ -59,28 +79,10 @@ export async function registerForPushNotificationsAsync() {
             return pushTokenString;
         } catch (e) {
             handleRegistrationError(`${e}`);
+            return null;
         }
     } else {
         handleRegistrationError('Must use physical device for push notifications');
+        return null;
     }
-}
-
-export async function sendPushNotification(expoPushToken) {
-    const message = {
-        to: expoPushToken,
-        sound: 'default',
-        title: 'Original Title',
-        body: 'And here is the body!',
-        data: { someData: 'goes here' },
-    };
-
-    await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Accept-encoding': 'gzip, deflate',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-    });
 }

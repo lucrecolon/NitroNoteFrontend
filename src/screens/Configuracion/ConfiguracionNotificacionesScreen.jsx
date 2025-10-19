@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Pressable, ActivityIndicator, StyleSheet } from "react-native";
-import Toast from "react-native-toast-message";
-import { Ionicons } from "@expo/vector-icons";
-import { getUser, updateNotificationEmailPreferences } from "../../service/service";
+import React, { useState, useEffect } from 'react';
+import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
+import {getUser} from "../../service/service";
 
 const PRIMARY = "#1E63FF";
 
@@ -20,11 +20,9 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                 if (user && typeof user.emailNotificationsEnabled === "boolean") {
                     setEnabledEmail(user.emailNotificationsEnabled);
                 }
-
-                // const storedPush = await AsyncStorage.getItem("pushNotificationsEnabled");
-                // if (storedPush !== null) {
-                //     setEnabledPush(storedPush === "true");
-                // }
+                if (user && typeof user.pushNotificationsEnabled === "boolean") {
+                    setEnabledPush(user.pushNotificationsEnabled);
+                }
             } catch (e) {
                 console.error("Error al guardar:", e);
                 Toast.show({
@@ -44,10 +42,26 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
         try {
             setSaving(true);
 
-            await updateNotificationEmailPreferences({ emailEnabled: enabledEmail });
+            let pushToken = null;
 
-            // Guardar push localmente
-            // await AsyncStorage.setItem("pushNotificationsEnabled", String(enabledPush));
+            // Si activa push notifications, obtener token
+            if (enabledPush) {
+                pushToken = await registerForPushNotificationsAsync();
+                if (!pushToken) {
+                    Toast.show({
+                        type: "error",
+                        text1: "Error",
+                        text2: "No se pudo obtener permiso para notificaciones"
+                    });
+                    return;
+                }
+            }
+
+            await updateNotificationEmailPreferences({
+                emailEnabled: enabledEmail,
+                pushEnabled: enabledPush,
+                pushToken: pushToken
+            });
 
             Toast.show({
                 type: "success",
