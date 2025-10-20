@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Toast from 'react-native-toast-message';
-import {getUser} from "../../service/service";
+import {getUser, updateNotificationEmailPreferences} from "../../service/service";
+import {registerForPushNotificationsAsync} from "../../utils/notifications";
 
 const PRIMARY = "#1E63FF";
 

@@ -10,6 +10,9 @@
       "channel": "development",
       "env": {
         "APP_VARIANT": "development"
+      },
+      "updates": {
+        "enabled": true
       }
     },
     "preview": {
@@ -17,6 +20,9 @@
       "channel": "preview",
       "env": {
         "APP_VARIANT": "preview"
+      },
+      "updates": {
+        "enabled": true
       }
     },
     "production": {
@@ -24,10 +30,17 @@
       "channel": "production",
       "env": {
         "APP_VARIANT": "production"
+      },
+      "updates": {
+        "enabled": true
       }
     }
   },
   "submit": {
     "production": {}
+  },
+  "updates": {
+    "enabled": true
   }
 }
+

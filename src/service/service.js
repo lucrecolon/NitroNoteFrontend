@@ -19,6 +19,7 @@ const api_endpoints = {
     login: `${api_base_url}/login`,
     logout: `${api_base_url}/logout`,
     user: `${api_base_url}/user`,
+    notificationPreferences: `${api_base_url}/user/notification-preferences`
 }
 
 
@@ -227,7 +228,8 @@ const updateUser = async (payload) => {
 export const updateNotificationEmailPreferences = async (prefs) => {
     try {
         const config = await getConfig();
-        const { data } = await axios.patch(`${api_endpoints.user}/notification-preferences`,
+        const { data } = await axios.patch(
+            api_endpoints.notificationPreferences,
             prefs, // { emailEnabled: true/false, pushEnabled: true/false, pushToken: "token" }
             config
         );
@@ -270,5 +272,3 @@ const Api = {
 }
 
 export default Api;
-
-
