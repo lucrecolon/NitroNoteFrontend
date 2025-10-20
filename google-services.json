@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "298315807021",
+    "project_id": "nitronote-4fda4",
+    "storage_bucket": "nitronote-4fda4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298315807021:android:eae352f11d5412d390fba4",
+        "android_client_info": {
+          "package_name": "com.lucrecolon.nitronote"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRx1aJajLpf5S1y5guTmkl1ais0G3u2S8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
