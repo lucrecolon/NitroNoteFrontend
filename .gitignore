@@ -37,3 +37,4 @@ yarn-error.*
 *.tsbuildinfo
 
 api-google-service-account.json
+nitronote-4fda4-firebase-adminsdk-fbsvc-cfc898c4db.json

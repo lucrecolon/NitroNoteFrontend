@@ -36,15 +36,19 @@ export default function LoginScreen({ navigation }) {
                 onChangeText={setEmail}
                 style={styles.input}
                 keyboardType="email-address"
+                placeholderTextColor= "#000"
+                autoCapitalize="none"
             />
 
             <View style={styles.inputPassword}>
                 <TextInput
                     placeholder="Contraseña"
+                    placeholderTextColor= "#000"
                     style={styles.inputText}
                     value={password}
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
+                    autoCapitalize="none"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                     <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#666" />
@@ -86,6 +90,7 @@ const styles = {
     inputText: {
         flex: 1,
         padding: 10,
+        color: "#000",
     },
     button: {
         backgroundColor: '#007BFF',

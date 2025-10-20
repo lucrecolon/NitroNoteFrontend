@@ -151,6 +151,7 @@ export default function CrearMantenimientoScreen() {
             <Picker
                 selectedValue={nombre}
                 onValueChange={(val) => setNombre(val)}
+                style={{color: '#000'}}
             >
               <Picker.Item label="Selecciona un mantenimiento..." value="" />
               {mantenimientosDisponibles.map((m) => (
@@ -181,6 +182,7 @@ export default function CrearMantenimientoScreen() {
                 <Picker
                     selectedValue={vehiculoId}
                     onValueChange={(val) => setVehiculoId(val)}
+                    style={{color: '#000'}}
                 >
                   {vehiculos.map((v) => (
                       <Picker.Item

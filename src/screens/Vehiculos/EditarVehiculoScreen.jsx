@@ -100,6 +100,7 @@ export default function EditarVehiculoScreen() {
         value={vehiculo.marca}
         editable={false}
         style={[styles.input, styles.disabled]}
+        placeholderTextColor= "#000"
       />
 
       {/* Modelo */}
@@ -108,6 +109,7 @@ export default function EditarVehiculoScreen() {
         value={vehiculo.modelo}
         editable={false}
         style={[styles.input, styles.disabled]}
+        placeholderTextColor= "#000"
       />
 
       {/* Patente */}
@@ -116,6 +118,7 @@ export default function EditarVehiculoScreen() {
         value={vehiculo.patente}
         editable={false}
         style={[styles.input, styles.disabled]}
+        placeholderTextColor= "#000"
       />
 
       {/* Kilómetros */}
@@ -125,6 +128,7 @@ export default function EditarVehiculoScreen() {
         onChangeText={setKilometros}
         keyboardType="numeric"
         style={styles.input}
+        placeholderTextColor= "#000"
       />
 
       {/* Año */}
@@ -134,6 +138,7 @@ export default function EditarVehiculoScreen() {
         editable={false}
         keyboardType="numeric"
         style={[styles.input, styles.disabled]}
+        placeholderTextColor= "#000"
       />
 
       {/* Botones */}

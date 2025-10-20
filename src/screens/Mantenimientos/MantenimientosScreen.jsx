@@ -15,6 +15,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
     const [matenimientoId, setIdMantenimiento] = useState(0);
 
     const handleActualizarKilometros = (patente,id) => {
+        console.log("Patente a actualizar:", patente);
         setModalVisible(true);
         setPatenteFinalizar(patente);
         setIdMantenimiento(id);
@@ -51,8 +52,7 @@ function Listado({ data, done, onAddPress, onRefresh, refreshing }) {
                        const fechaHecho = item?.fechaDeRealizacion && item.fechaDeRealizacion !== "" ? item.fechaDeRealizacion : "-";
                        const fechaPara = item?.fechaARealizar && item.fechaARealizar !== "" ? item.fechaARealizar : "-";
                        const km = item?.kmARealizar ?? item?.kmRealizados ?? '-';
-                       const patente = item?.vehiculoId;
-
+                       const patente = item?.patente;
                        return (
                            <View
                                style={{

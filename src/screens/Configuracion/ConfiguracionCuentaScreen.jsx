@@ -116,6 +116,7 @@ export default function ConfiguracionCuentaScreen({navigation}) {
                     onChangeText={setPassword}
                     secureTextEntry={!showPassword}
                     placeholder="Mínimo 8 caracteres"
+                    placeholderTextColor= "#000"
                 />
                 <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeButton}>
                     <Ionicons name={showPassword ? "eye-off" : "eye"} size={22} color="#666" />
@@ -152,6 +153,7 @@ const styles = {
         marginBottom: 15,
         padding: 10,
         backgroundColor: "#f9fafb",
+        color: "#000",
     },
     button: {
         marginTop: 12,

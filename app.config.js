@@ -37,13 +37,13 @@ export default ({ config }) => ({
     ],
     extra: {
         eas: {
-            projectId: "6666c354-4eee-4a68-a69f-3e1e4959e283"
+            projectId: "7c910762-9b8d-42c8-951a-cfb6767fdacf"
         },
         API_URL: "https://nitronotebackend-production.up.railway.app",
         APP_VARIANT: process.env.APP_VARIANT || 'production'
     },
     updates: {
-        url: "https://u.expo.dev/6666c354-4eee-4a68-a69f-3e1e4959e283",
+        url: "https://u.expo.dev/7c910762-9b8d-42c8-951a-cfb6767fdacf",
         fallbackToCacheTimeout: 0
     }
 });

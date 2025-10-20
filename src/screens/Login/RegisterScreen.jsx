@@ -55,6 +55,7 @@ export default function LoginScreen({ navigation }) {
                     style={styles.input}
                     keyboardType="default"
                     autoCapitalize="words"
+                    placeholderTextColor= "#000"
                   />
                   <TextInput
                     placeholder="Email"
@@ -62,18 +63,24 @@ export default function LoginScreen({ navigation }) {
                     onChangeText={setEmail}
                     style={styles.input}
                     keyboardType="email-address"
-                  />
+                    placeholderTextColor= "#000"
+                    autoCapitalize="none"
+                    />
                   <TextInput
                     placeholder="Contraseña"
+                    placeholderTextColor= "#000"
                     value={password}
                     onChangeText={setPassword}
                     style={styles.input}
-                  />
+                    autoCapitalize="none"
+                    />
                   <TextInput
                     placeholder="Confirmar contraseña"
+                    placeholderTextColor= "#000"
                     value={confirmPassword}
                     onChangeText={setConfirmPassword}
                     style={styles.input}
+                    autoCapitalize="none"
                   />
                   <TouchableOpacity style={styles.button} onPress={handleRegister}>
                     <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 , textAlign: "center" }}>

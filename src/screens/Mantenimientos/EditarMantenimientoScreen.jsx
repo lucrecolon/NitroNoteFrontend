@@ -85,6 +85,7 @@ export default function EditarMantenimientoScreen() {
           value={mantenimiento.nombre}
           editable={false}
           style={[styles.input, styles.disabled]}
+          placeholderTextColor= "#000"
         />
 
         {/* Fecha a realizar  */}
@@ -93,6 +94,7 @@ export default function EditarMantenimientoScreen() {
           value={potentialNewDate}
           onChangeText={setNewDate}
           style={styles.input}
+          placeholderTextColor= "#000"
         />
 
         {/* Kilometros para finalización */}
@@ -102,6 +104,7 @@ export default function EditarMantenimientoScreen() {
           onChangeText={setKilometros}
           keyboardType="numeric"
           style={styles.input}
+          placeholderTextColor= "#000"
         />
 
         {/* Botones */}

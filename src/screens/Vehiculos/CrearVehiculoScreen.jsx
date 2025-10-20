@@ -76,7 +76,7 @@ export default function DetalleVehiculoScreen() {
         <Picker
           selectedValue={marca}
           onValueChange={(itemValue) => { setMarca(itemValue); setModelo(""); }}
-          style={{ height: 50 }}
+          style={{ height: 50, color: 'black' }}
           mode="dropdown"
         >
           <Picker.Item label="Selecciona una marca..." value="" />
@@ -93,7 +93,7 @@ export default function DetalleVehiculoScreen() {
           enabled={!!marca}
           selectedValue={modelo}
           onValueChange={(itemValue) => setModelo(itemValue)}
-          style={{ height: 50 }}
+          style={{ height: 50, color: 'black' }}
           mode="dropdown"
         >
           <Picker.Item label={marca ? "Selecciona un modelo..." : "Selecciona una marca primero"} value="" />
@@ -109,6 +109,7 @@ export default function DetalleVehiculoScreen() {
         value={patente}
         onChangeText={(text) => setPatente(text.toUpperCase())}
         placeholder="AA000AA o ABC123"
+        placeholderTextColor= "#000"
         style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
       />
 
@@ -120,6 +121,7 @@ export default function DetalleVehiculoScreen() {
         inputMode="numeric"
         keyboardType="numeric"
         placeholder="Año"
+        placeholderTextColor= "#000"
         style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
       />
 
@@ -131,6 +133,7 @@ export default function DetalleVehiculoScreen() {
         inputMode="numeric"
         keyboardType="numeric"
         placeholder="Kilometros"
+        placeholderTextColor= "#000"
         style={{ borderWidth: 1, borderRadius: 8, padding: 10 }}
       />
 

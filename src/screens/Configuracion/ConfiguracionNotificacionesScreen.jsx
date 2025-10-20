@@ -57,7 +57,7 @@ export default function ConfiguracionNotificacionesScreen({ navigation }) {
                     return;
                 }
             }
-
+            console.log(enabledPush, pushToken);
             await updateNotificationEmailPreferences({
                 emailEnabled: enabledEmail,
                 pushEnabled: enabledPush,
