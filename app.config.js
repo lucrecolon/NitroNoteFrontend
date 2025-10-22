@@ -2,8 +2,8 @@ const IS_DEV = process.env.APP_VARIANT === 'development';
 const IS_PREVIEW = process.env.APP_VARIANT === 'preview';
 
 const getUniqueIdentifier = () => {
-    if (IS_DEV) return 'com.lucrecolon.nitronote.dev';
-    if (IS_PREVIEW) return 'com.lucrecolon.nitronote.preview';
+    //if (IS_DEV) return 'com.lucrecolon.nitronote.dev';
+    //if (IS_PREVIEW) return 'com.lucrecolon.nitronote.preview';
     return 'com.lucrecolon.nitronote';
 };
 

@@ -97,16 +97,18 @@ const styles = {
     borderColor: "#d1d5db",
     borderRadius: 10,
     margin:10,
-    left: 10,
-    width:335,
     backgroundColor: "#f9fafb",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center"
   },
   button: {
+    height: 48,
     backgroundColor: '#007BFF',
-    padding: 15,
-    width:335,
-    left: 20,
-    borderRadius: 10,
-    marginTop: 10,
+    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    margin:10,
+    justifyContent: "center"
   },
 };

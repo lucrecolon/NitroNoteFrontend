@@ -36,7 +36,7 @@ export default function EditarMantenimientoScreen() {
         const newDateAsDateFormat = new Date(newDate + "T00:00:00");
         newDateAsDateFormat.setHours(0,0,0,0);
         today.setHours(0,0,0,0);
-        if (newDateAsDateFormat < today) {
+        if (newDateAsDateFormat <= today) {
             Alert.alert('La fecha no puede ser menor a la fecha actual.');
             return;
         };

@@ -227,6 +227,7 @@ const updateUser = async (payload) => {
 
 export const updateNotificationEmailPreferences = async (prefs) => {
     try {
+
         const config = await getConfig();
         const { data } = await axios.patch(
             api_endpoints.notificationPreferences,

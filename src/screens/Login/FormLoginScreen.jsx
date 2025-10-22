@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Image,View, Text, TouchableOpacity } from "react-native";
 import RegisterScreen from "./RegisterScreen";
 import LoginScreen from "./LoginScreen";
 
@@ -11,18 +11,19 @@ export default function FormLoginScreen({ navigation }) {
     <View style={{ backgroundColor: "#e9e9e9ff", padding: 20, height: "100%", flex:1, justifyContent: "center"}}>
       {/* Logo */}
       <View style={{ alignItems:"center", marginBottom: 20}}>
-        <View
-          style={{
-            width: 70,
-            height: 70,
-            borderRadius: 35,
-            backgroundColor: "#2563eb",
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 10,
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 30 }}>🚗</Text>
+        <View style={{
+        width: 150,
+        height: 150,
+        justifyContent: "center",
+        alignItems: "center",
+      }}>
+         <Image source={require("../../../assets/NitroNoteIcon.png")} 
+         style = {{
+           width: "180%",
+           height: "180%",
+           borderRadius: 35,
+           resizeMode: "cover",
+         }}/>
         </View>
         <Text style={{ fontSize: 24, fontWeight: "bold" }}>NitroNote</Text>
         <Text style={{ color: "gray" }}>Gestiona el mantenimiento de tus vehículos</Text>
