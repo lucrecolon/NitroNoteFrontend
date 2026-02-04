@@ -41,7 +41,7 @@ El proyecto sigue una estructura organizada por responsabilidades en el frontend
 * **Services/API**: Módulos encargados de realizar las peticiones al Backend.
 * **Assets**: Recursos estáticos como imágenes y fuentes.
 
-> ⚠️ Este proyecto es el **Frontend** y requiere que el servidor Backend esté en ejecución para funcionar completamente. Asegúrate de configurar la URL de la API correctamente en los archivos de configuración.
+> ⚠️ Este proyecto es el **Frontend** y requiere que el servidor Backend esté en ejecución para funcionar completamente. Repositorio backend: (https://github.com/Fabricio-Camilla/NitroNoteBackend.git)
 
 # Estado del proyecto
 📌 Proyecto académico finalizado, abierto a mejoras y refactorizaciones.
